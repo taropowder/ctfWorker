@@ -33,8 +33,9 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">赛题管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/topic/upload">赛题上传</a></dd>
-                    <dd><a href="">查看题目</a></dd>
+                    <dd><a href="{% url 'topic_upload' %}">赛题上传</a></dd>
+                    <dd><a href="{% url 'topic_list' %}">查看题目</a></dd>
+                    <dd><a href="{% url 'topic_group_list' %}">查看组卷</a></dd>
                 </dl>
             </li>
         </ul>

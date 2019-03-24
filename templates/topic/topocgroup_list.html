@@ -5,7 +5,7 @@
         <div class="layui-col-md2"></div>
             <div class="layui-col-md8">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                <legend>题库</legend>
+                <legend>题组</legend>
             </fieldset>
 
             <table class="layui-table" lay-skin="line">
@@ -20,16 +20,16 @@
                     <th>题目名称</th>
                     <th>题目类型</th>
                     <th>题目端口</th>
-                    <th>加入题组</th>
+                    <th>移除题组</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for topic in topic_list %}
                 <tr>
-                    <td><a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a></td>
+                    <td>{{ topic.title }}</td>
                     <td>{{ topic.type }}</td>
                     <td>{{ topic.port }}</td>
-                    <td><a href="{% url 'topic_detail' topic.id %}" class="layui-btn layui-btn-normal">加入题组</a></td>
+                    <td><a href="/topic/detail/{{ topic.id }}" class="layui-btn layui-btn-normal">加入题组</a></td>
                 </tr>
                 {% endfor %}
 

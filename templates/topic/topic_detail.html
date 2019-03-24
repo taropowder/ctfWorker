@@ -7,6 +7,7 @@
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
                 <legend>题库</legend>
             </fieldset>
+           
 
             <table class="layui-table" lay-skin="line">
                 <colgroup>
@@ -24,14 +25,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for topic in topic_list %}
-                <tr>
-                    <td><a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a></td>
-                    <td>{{ topic.type }}</td>
-                    <td>{{ topic.port }}</td>
-                    <td><a href="{% url 'topic_detail' topic.id %}" class="layui-btn layui-btn-normal">加入题组</a></td>
-                </tr>
-                {% endfor %}
+                {{ topic.exec_command }}
+{#                {% for topic in topic_list %}#}
+{#                <tr>#}
+{#                    <td>{{ topic.title }}</td>#}
+{#                    <td>{{ topic.type }}</td>#}
+{#                    <td>{{ topic.port }}</td>#}
+{#                    <td><a href="/topic/detail/{{ topic.id }}" class="layui-btn layui-btn-normal">加入题组</a></td>#}
+{#                </tr>#}
+{#                {% endfor %}#}
 
                 </tbody>
             </table>

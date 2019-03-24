@@ -1,9 +1,9 @@
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
-from topic.models import Topic, TopicInstance, Team
+from topic.models import Topic, TopicInstance, Team, TopicGroup
 from topic.forms import UploadForm
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 
 
 # Create your views here.
@@ -14,19 +14,9 @@ def home(request):
 
 
 def topic(request, type):
-    print(type)
     content = {}
     content['type'] = type
     return render(request, 'topic.html', content)
-
-
-def upload(request):
-    content = {}
-    if request.method == 'GET':
-        content['deploy_types'] = Topic.BUILD_TYPE_CHOOSE
-        content['topic_types'] = Topic.TYPE_CHOOSE
-        content['form'] = UploadForm()
-        return render(request, 'upload.html', content)
 
 
 class TopicCreate(CreateView):
@@ -36,10 +26,19 @@ class TopicCreate(CreateView):
     success_url = '/'  # 成功添加表对象后 跳转到的页面
 
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
-        print(form.errors)
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
+
 
 class TopicListView(ListView):
     template_name = 'topic/topoc_list.html'
     model = Topic
 
+
+class TopicGroupListView(ListView):
+    template_name = 'topic/topocgroup_list.html'
+    model = TopicGroup
+
+
+class TopicDetailView(DetailView):
+    template_name = 'topic/topic_detail.html'
+    model = Topic
