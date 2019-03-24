@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block root %}
+    <div class="layui-row">
+            <div class="layui-row layui-col-space10" >
+        <div class="layui-col-md2"></div>
+            <div class="layui-col-md8">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                <legend>题库</legend>
+            </fieldset>
+
+            <table class="layui-table" lay-skin="line">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>题目名称</th>
+                    <th>题目类型</th>
+                    <th>题目端口</th>
+                    <th>加入题组</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for topic in topic_list %}
+                <tr>
+                    <td>{{ topic.title }}</td>
+                    <td>{{ topic.type }}</td>
+                    <td>{{ topic.port }}</td>
+                    <td><a href="/topic/detail/{{ topic.id }}" class="layui-btn layui-btn-normal">加入题组</a></td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+{#            {% for student in topic_list %}#}
+{#                <li>#}
+{#                    {{ student.title }}#}
+{#                </li>#}
+{#            {% endfor %}#}
+        </div>
+    </div>
+
+{% endblock %}
