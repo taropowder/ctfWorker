@@ -5,7 +5,7 @@
         <div class="layui-col-md2"></div>
             <div class="layui-col-md8">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                <legend>题库</legend>
+                <legend>题组</legend>
             </fieldset>
 
             <table class="layui-table" lay-skin="line">
@@ -20,16 +20,18 @@
                     <th>题目名称</th>
                     <th>题目类型</th>
                     <th>题目端口</th>
-                    <th>加入题组</th>
+                    <th>移除题组</th>
+                    <th>关闭题目</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for topic in topic_list %}
+                {% for topic_group in topicgroup_list %}
                 <tr>
-                    <td><a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a></td>
-                    <td>{{ topic.type }}</td>
-                    <td>{{ topic.port }}</td>
-                    <td><button class="layui-btn layui-btn-normal" onclick="join_topic_group({{ topic.id }})">加入题组</button></td>
+                    <td><a href="{% url 'topic_detail' topic_group.topic_id.id %}">{{ topic_group.topic_id.title }}</a></td>
+                    <td>{{ topic_group.topic_id.type }}</td>
+                    <td>{{ topic_group.topic_id.port }}</td>
+                    <td><button class="layui-btn layui-btn-warm" onclick="delete_topic_group({{ topic_group.topic_id.id  }},'{% url 'topic_group_delete' topic_group.id %}')" >移除题目</button></td>
+                    <td><button class="layui-btn layui-btn-danger" onclick="join_topic_group({{ topic.id }})">关闭题目</button></td>
                 </tr>
                 {% endfor %}
 
@@ -37,15 +39,15 @@
             </table>
         </div>
     </div>
-<script>
-            function join_topic_group(id) {
+ <script>
+            function delete_topic_group(id,url) {
                 layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
                         type: 1,
                         closeBtn: 2,
                         title: ['确认加入？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='{% url 'topic_group_add'  %}' method='post'>{% csrf_token %}<input type='hidden' name='topic_id' value='"+id+"' ><input class='layui-btn layui-btn-danger'  type='submit' value='确认删除'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='"+url+"' method='post'>{% csrf_token %}<input type='hidden' name='topic_id' value='"+id+"' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
                     });
                 });
             }

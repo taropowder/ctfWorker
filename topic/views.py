@@ -30,12 +30,12 @@ class TopicCreate(CreateView):
 
 
 class TopicListView(ListView):
-    template_name = 'topic/topoc_list.html'
+    template_name = 'topic/topic_list.html'
     model = Topic
 
 
 class TopicGroupListView(ListView):
-    template_name = 'topic/topocgroup_list.html'
+    template_name = 'topic/topic_group_list.html'
     model = TopicGroup
 
 
@@ -66,5 +66,12 @@ class TopicGroupJoinView(CreateView):
     success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
     fields = ('topic_id',)
 
-    # def post(self, request, *args, **kwargs):
-    #     return HttpResponse('123')
+    def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
+        return HttpResponse("form is invalid.. this is just an HttpResponse object")
+
+
+class TopicGroupDeleteView(DeleteView):
+    model = TopicGroup
+    success_url = reverse_lazy('topic_group_list')
+
+    get = DeleteView.http_method_not_allowed

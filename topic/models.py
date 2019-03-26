@@ -1,6 +1,7 @@
 from django.db import models
 from uuid import uuid1
 
+
 # Create your models here.
 
 
@@ -43,4 +44,4 @@ class TopicInstance(models.Model):
 
 
 class TopicGroup(models.Model):
-    topic_id = models.ForeignKey(Topic)
+    topic_id = models.ForeignKey(Topic, unique=True)
