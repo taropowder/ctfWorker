@@ -14,8 +14,10 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import url,include
+from django.conf.urls import url, include, patterns
 from django.contrib import admin
+from django.conf.urls.static import static
+from ctfWorker import settings
 from topic import views as topic_views
 
 urlpatterns = [
@@ -24,3 +26,10 @@ urlpatterns = [
     url(r'^topic', include('topic.urls')),
 
 ]
+
+
+if settings.DEBUG:
+    # static files (images, css, javascript, etc.)
+    urlpatterns = patterns('',
+                           # ... the rest of your URLconf goes here ...
+                           ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

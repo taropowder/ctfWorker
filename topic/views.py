@@ -1,5 +1,4 @@
 from django.core.urlresolvers import reverse_lazy
-from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
 from topic.models import Topic, TopicInstance, Team, TopicGroup
@@ -23,8 +22,11 @@ def topic(request, type):
 class TopicCreate(CreateView):
     model = Topic
     form_class = UploadForm  # 表类
-    template_name = 'upload.html'  # 添加表对象的模板页面
-    success_url = reverse_lazy('topic_list')# 成功添加表对象后 跳转到的页面
+    template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
+    success_url = reverse_lazy('topic_list')  # 成功添加表对象后 跳转到的页面
+
+    def form_valid(self, form):
+        return super(TopicCreate, self).form_valid(form)
 
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
@@ -44,6 +46,7 @@ class TopicDetailView(DetailView):
     template_name = 'topic/topic_detail.html'
     model = Topic
 
+
 class TopicUpdateView(UpdateView):
     model = Topic
     form_class = UploadForm
@@ -51,4 +54,3 @@ class TopicUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('topic_detail', kwargs=self.kwargs)
-

@@ -34,12 +34,17 @@ class UploadForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': "layui-input"})
     )
 
+    zip_file = forms.FileField(
+        label='部署文件',
+        required=True
+    )
 
     class Meta:
         model = Topic
         fields = [
             'port',
             'type',
+            'zip_file',
             'build_type',
             'title',
             'introduction',

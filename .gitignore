@@ -99,4 +99,5 @@ mooder/settings_development.py
 
 .secretkey
 topic/files/*
+storage/*
 .DS_Store
