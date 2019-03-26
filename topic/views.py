@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from topic.models import Topic, TopicInstance, Team, TopicGroup
 from topic.forms import UploadForm
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 
 # Create your views here.
@@ -51,3 +51,10 @@ class TopicUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('topic_detail', kwargs=self.kwargs)
+
+
+class TopicDeleteView(DeleteView):
+    model = Topic
+    success_url = reverse_lazy('topic_list')
+
+    get = DeleteView.http_method_not_allowed
