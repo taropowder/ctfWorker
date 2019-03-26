@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'/group_list/', topic_views.TopicGroupListView.as_view(), name='topic_group_list'),
     url(r'/group_add/', topic_views.TopicGroupJoinView.as_view(), name='topic_group_add'),
     url(r'/group_delete/(?P<pk>\d+)/', topic_views.TopicGroupDeleteView.as_view(), name='topic_group_delete'),
-    url(r'^(.+)/', topic_views.topic, name='type'),
+    url(r'^/(?P<type>[A-Za-z0-9]+)/', topic_views.TopicCardView.as_view(), name='type'),
 
 ]

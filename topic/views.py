@@ -13,6 +13,18 @@ def home(request):
     return render(request, 'index.html', {'form': form})
 
 
+class TopicCardView(ListView):
+    template_name = 'topic/topic_card_list.html'
+    model = TopicGroup
+
+    def get_context_data(self, **kwargs):
+        kwargs['type'] = self.kwargs['type']
+        return super(TopicCardView, self).get_context_data(**kwargs)
+
+    def get_queryset(self):
+        qs = super(TopicCardView, self).get_queryset()
+        return qs.filter(topic__type=self.kwargs['type'])
+
 def topic(request, type):
     content = {}
     content['type'] = type
@@ -64,7 +76,7 @@ class TopicGroupJoinView(CreateView):
     get = View.http_method_not_allowed
     model = TopicGroup
     success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
-    fields = ('topic_id',)
+    fields = ('topic',)
 
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
         return HttpResponse("form is invalid.. this is just an HttpResponse object")

@@ -27,10 +27,11 @@
                 <tbody>
                 {% for topic_group in topicgroup_list %}
                 <tr>
-                    <td><a href="{% url 'topic_detail' topic_group.topic_id.id %}">{{ topic_group.topic_id.title }}</a></td>
-                    <td>{{ topic_group.topic_id.type }}</td>
-                    <td>{{ topic_group.topic_id.port }}</td>
-                    <td><button class="layui-btn layui-btn-warm" onclick="delete_topic_group({{ topic_group.topic_id.id  }},'{% url 'topic_group_delete' topic_group.id %}')" >移除题目</button></td>
+{#                <td>{{ topic_group.topic.id }}</td>#}
+                    <td><a href="{% url 'topic_detail' topic_group.topic.id %}">{{ topic_group.topic.title }}</a></td>
+                    <td>{{ topic_group.topic.type }}</td>
+                    <td>{{ topic_group.topic.port }}</td>
+                    <td><button class="layui-btn layui-btn-warm" onclick="delete_topic_group({{ topic_group.topic.id  }},'{% url 'topic_group_delete' topic_group.id %}')" >移除题目</button></td>
                     <td><button class="layui-btn layui-btn-danger" onclick="join_topic_group({{ topic.id }})">关闭题目</button></td>
                 </tr>
                 {% endfor %}
@@ -47,7 +48,7 @@
                         type: 1,
                         closeBtn: 2,
                         title: ['确认加入？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='"+url+"' method='post'>{% csrf_token %}<input type='hidden' name='topic_id' value='"+id+"' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='"+url+"' method='post'>{% csrf_token %}<input type='hidden' name='topic' value='"+id+"' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
                     });
                 });
             }

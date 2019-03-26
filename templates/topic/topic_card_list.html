@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% block root %}
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>{{ type }}</legend>
+        </fieldset>
+
+
+        <div class="layui-row layui-col-space10" style="padding: 15px;">
+            {% for topicgroup in topicgroup_list %}
+                <a href="#">
+                    <div class="layui-col-md4">
+                        <div class="layui-card" onclick="showTopic()">
+                            <div class="layui-card-header">{{ topicgroup.topic.title }}</div>
+                            <div class="layui-card-body">
+                                {{ topicgroup.topic.content }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+    </div>
+    <script>
+        function showTopic() {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 1
+                    ,
+                     title: ['标题', 'font-size:18px;']//不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,
+                    btn: ['打开链接', '等等再做']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                    '端口： 1221' +
+                    '</div>'
+                    ,
+                    success: function (layero) {
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            , target: '_blank'
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+{% endblock %}

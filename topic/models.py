@@ -44,4 +44,4 @@ class TopicInstance(models.Model):
 
 
 class TopicGroup(models.Model):
-    topic_id = models.ForeignKey(Topic, unique=True)
+    topic = models.ForeignKey(Topic, unique=True)
