@@ -25,9 +25,6 @@ class TopicCreate(CreateView):
     template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
     success_url = reverse_lazy('topic_list')  # 成功添加表对象后 跳转到的页面
 
-    def form_valid(self, form):
-        return super(TopicCreate, self).form_valid(form)
-
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 

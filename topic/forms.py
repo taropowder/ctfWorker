@@ -11,11 +11,11 @@ class UploadForm(forms.ModelForm):
 
     type = forms.CharField(
         label='赛题类型',
-        widget=forms.Select(choices=Topic.TYPE_CHOOSE,attrs={'lay-verify': 'required'})
+        widget=forms.Select(choices=Topic.TYPE_CHOOSE, attrs={'lay-verify': 'required'})
     )
 
     build_type = forms.CharField(
-        widget=forms.Select(choices=Topic.BUILD_TYPE_CHOOSE,attrs={'lay-verify': 'required'})
+        widget=forms.Select(choices=Topic.BUILD_TYPE_CHOOSE, attrs={'lay-verify': 'required'})
     )
 
     title = forms.CharField(
@@ -24,7 +24,7 @@ class UploadForm(forms.ModelForm):
     )
     introduction = forms.CharField(
         label='题目介绍',
-        widget=forms.Textarea(attrs={'class': "layui-textarea",'rows': '5'})
+        widget=forms.Textarea(attrs={'class': "layui-textarea", 'rows': '5'})
     )
     build_name = forms.CharField(
         label='镜像名称',
@@ -38,6 +38,13 @@ class UploadForm(forms.ModelForm):
         label='部署文件',
         required=True
     )
+
+    def clean_zip_file(self):
+        exts = ['zip', '7z']
+        for ext in exts:
+            if self.cleaned_data['zip_file'].name.endswith(ext):
+                return self.cleaned_data['zip_file']
+        raise forms.ValidationError('上传的文件类型不被允许')
 
     class Meta:
         model = Topic

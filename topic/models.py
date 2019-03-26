@@ -1,5 +1,5 @@
 from django.db import models
-
+from uuid import uuid1
 
 # Create your models here.
 
@@ -31,7 +31,7 @@ class Topic(models.Model):
     introduction = models.TextField('题目简介')
     flag_is_unique = models.BooleanField('答案是否唯一')
     exec_command = models.TextField('需要执行的命令', null=True)
-    zip_file = models.FileField(verbose_name='部署的压缩包', upload_to='docker', null=False)
+    zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid1()}', null=False)
 
 
 class TopicInstance(models.Model):
