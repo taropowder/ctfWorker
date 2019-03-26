@@ -1,6 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.db import models
 
 register = template.Library()
 
@@ -57,3 +58,27 @@ def fill_form_filed(filed, help_content=None):
     # if autoescape:
     #     name = conditional_escape(filed)
     return mark_safe(filed_label.format(label=filed.label, input=filed, help=help_content))
+
+
+@register.filter(name="detail_filed", filed=None)
+def fill_form_filed(model: models.Model, field=None):
+    filed_label = """
+                <tr>
+                    <td>{label}</td>
+                    <td>{value}</td>
+                </tr>
+                """
+
+    return mark_safe(filed_label.format(label=model._meta.get_field(field).verbose_name, value=getattr(model, field)))
+
+
+@register.filter(name="detail_select_filed", filed=None)
+def fill_form_filed(model: models.Model, field=None):
+    filed_label = """
+                <tr>
+                    <td>{label}</td>
+                    <td>{value}</td>
+                </tr>"""
+    # getattr(models, 'get_' + field + '_display'))
+    return mark_safe(filed_label.format(label=model._meta.get_field(field).verbose_name,
+                                        value=eval(f'model.get_{field}_display()')))

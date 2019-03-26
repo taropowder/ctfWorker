@@ -1,41 +1,35 @@
 {% extends 'layout.html' %}
+{% load topic_helper %}
 {% block root %}
     <div class="layui-row">
             <div class="layui-row layui-col-space10" >
         <div class="layui-col-md2"></div>
             <div class="layui-col-md8">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                <legend>题库</legend>
+                <legend>{{ topic.title }}</legend>
             </fieldset>
-           
+            <a href="" class="layui-btn layui-btn-danger" style="float: right;margin-bottom: 20px;margin-left: 10px">删除</a>
+            <a href="{% url 'topic_update' topic.id %}" class="layui-btn layui-btn-normal" style="float: right;margin-bottom: 20px">修改</a>
 
             <table class="layui-table" lay-skin="line">
                 <colgroup>
                     <col width="150">
                     <col width="150">
-                    <col width="200">
-                    <col>
                 </colgroup>
-                <thead>
-                <tr>
-                    <th>题目名称</th>
-                    <th>题目类型</th>
-                    <th>题目端口</th>
-                    <th>加入题组</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{ topic.exec_command }}
-{#                {% for topic in topic_list %}#}
-{#                <tr>#}
-{#                    <td>{{ topic.title }}</td>#}
-{#                    <td>{{ topic.type }}</td>#}
-{#                    <td>{{ topic.port }}</td>#}
-{#                    <td><a href="/topic/detail/{{ topic.id }}" class="layui-btn layui-btn-normal">加入题组</a></td>#}
-{#                </tr>#}
-{#                {% endfor %}#}
 
-                </tbody>
+                    {{topic | detail_filed:'title'}}
+                    {{topic | detail_filed:'port'}}
+                    {{topic | detail_select_filed:'build_type'}}
+                    {{topic | detail_select_filed:'type'}}
+                    {{topic | detail_filed:'introduction'}}
+                    {{topic | detail_filed:'flag_is_unique'}}
+                    {{topic | detail_filed:'exec_command'}}
+                    <tr>
+                    <td>创建时间</td>
+                    <td>{{ topic.create_time | date:"Y-m-d H:i:s" }}</td>
+                </tr>
+{#                    {{topic | detail_filed:'create_time'}}#}
+
             </table>
         </div>
     </div>
