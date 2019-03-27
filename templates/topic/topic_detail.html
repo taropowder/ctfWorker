@@ -47,7 +47,6 @@
                     var layer = layui.layer;
                     layer.open({
                         type: 1,
-{#                        area: ['400px', '160px'],#}
                         closeBtn: 2,
                         title: ['确认删除？', 'font-size:18px;'],
                         content: "<div align='center' ><form action='{% url 'topic_delete' topic.id %}' method='post'>{% csrf_token %}<input class='layui-btn layui-btn-danger'  type='submit' value='确认删除'></form></div>" //这里content是一个普通的String

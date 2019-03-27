@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from topic.models import Topic, TopicInstance, Team, TopicGroup
 from topic.forms import UploadForm
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
 
 
 # Create your views here.
@@ -58,3 +58,13 @@ class TopicDeleteView(DeleteView):
     success_url = reverse_lazy('topic_list')
 
     get = DeleteView.http_method_not_allowed
+
+
+class TopicGroupJoinView(CreateView):
+    get = View.http_method_not_allowed
+    model = TopicGroup
+    success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
+    fields = ('topic_id',)
+
+    # def post(self, request, *args, **kwargs):
+    #     return HttpResponse('123')
