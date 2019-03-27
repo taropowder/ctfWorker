@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block root %}
+    {% load topic_helper %}
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             <legend>{{ type }}</legend>
@@ -8,55 +9,71 @@
 
         <div class="layui-row layui-col-space10" style="padding: 15px;">
             {% for topicgroup in topicgroup_list %}
-                <a href="#">
-                    <div class="layui-col-md4">
-                        <div class="layui-card" onclick="showTopic()">
+                <div class="layui-col-md4">
+                    <a href="#">
+                        <div class="layui-card"
+                             onclick="showTopic('{{ request.get_host | url_parser:topicgroup.topic.port }}','{{ topicgroup.topic.title }}')">
                             <div class="layui-card-header">{{ topicgroup.topic.title }}</div>
                             <div class="layui-card-body">
-                                {{ topicgroup.topic.content }}
+                                {{ topicgroup.topic.introduction }}
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+
+                </div>
 
             {% endfor %}
 
 
         </div>
-
-    </div>
     </div>
     <script>
-        function showTopic() {
+        function showTopic(url, title) {
             layui.use('layer', function () {
                 var layer = layui.layer;
                 layer.open({
                     type: 1
                     ,
-                     title: ['标题', 'font-size:18px;']//不显示标题栏
+                    title: [title, 'font-size:18px;']//不显示标题栏
                     ,
                     closeBtn: false
                     ,
-                    area: '300px;'
-                    ,
                     shade: 0.8
+                    ,
+                    area: ['600px', '250px']
                     ,
                     id: 'LAY_layuipro' //设定一个id，防止重复弹出
                     ,
-                    btn: ['打开链接', '等等再做']
+                    btn: ['打开题目', '等等再做']
                     ,
                     btnAlign: 'c'
                     ,
+                    scrollbar: false
+                    ,
                     moveType: 1 //拖拽模式，0或者1
                     ,
-                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
-                    '端口： 1221' +
-                    '</div>'
+                    content: '<div style="padding: 10px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                        ' <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">\n' +
+                        '            <legend>题目地址:    <a href="' + url + '" style="color: red">' + url + ' </a></legend>' +
+                        '        </fieldset>' +
+                        "<div class=\"layui-form-item\">\n" +
+                        "            <label for=\"name\" class=\"layui-form-label\">输入FLAG</label>\n" +
+                        "            <div class=\"layui-inline\">\n" +
+                        "                <div class=\"layui-input-inline\" style=\"width: 300px\">\n" +
+                        "                    <input type=\"text\" id=\"name\" name=\"name\" value=\"\" required lay-verify=\"required\"\n" +
+                        "                           placeholder=\"请填入FLAG\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                        "                </div>\n" +
+                        "                <div class=\"layui-input-inline\" style=\"width: 90px\">\n" +
+                        "                    <button class=\"layui-btn\" lay-filter=\"*\" lay-submit>提交</button>\n" +
+                        "                </div>\n" +
+                        "            </div>\n" +
+                        "        </div>" +
+                        '</div>'
                     ,
                     success: function (layero) {
                         var btn = layero.find('.layui-layer-btn');
                         btn.find('.layui-layer-btn0').attr({
-                            href: 'http://www.layui.com/'
+                            href: url
                             , target: '_blank'
                         });
                     }

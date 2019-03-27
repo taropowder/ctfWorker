@@ -82,3 +82,15 @@ def fill_form_filed(model: models.Model, field=None):
     # getattr(models, 'get_' + field + '_display'))
     return mark_safe(filed_label.format(label=model._meta.get_field(field).verbose_name,
                                         value=eval(f'model.get_{field}_display()')))
+
+
+@register.filter(name="url_parser", filed=None)
+def fill_form_filed(host:str, port=None):
+    if ':' in host:
+        host = host.split(':')[0]
+    if port:
+        url = f"http://{host}:{port}"
+    else:
+        url = f"http://{host}"
+    # getattr(models, 'get_' + field + '_display'))
+    return mark_safe(url)
