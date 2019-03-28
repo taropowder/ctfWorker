@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'/list/', topic_views.TopicListView.as_view(), name='topic_list'),
     url(r'/group_list/', topic_views.TopicGroupListView.as_view(), name='topic_group_list'),
     url(r'/group_add/', topic_views.TopicGroupJoinView.as_view(), name='topic_group_add'),
+    url(r'/build/', topic_views.buildImageView.as_view(), name='image_build'),
     url(r'/group_delete/(?P<pk>\d+)/', topic_views.TopicGroupDeleteView.as_view(), name='topic_group_delete'),
     url(r'^/(?P<type>[A-Za-z0-9]+)/', topic_views.TopicCardView.as_view(), name='type'),
 

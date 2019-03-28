@@ -14,6 +14,9 @@
                     </button>
                     <a href="{% url 'topic_update' topic.id %}" class="layui-btn layui-btn-normal"
                        style="float: right;margin-bottom: 20px">修改</a>
+                            <button class="layui-btn layui-btn-warm" onclick="delete_topic()"
+                            style="float: right;margin-bottom: 20px;margin-left: 10px">BUILD镜像
+                    </button>
                 </div>
 
                 <table class="layui-table" lay-skin="line">
@@ -29,6 +32,7 @@
                     {{ topic | detail_filed:'introduction' }}
                     {{ topic | detail_filed:'flag_is_unique' }}
                     {{ topic | detail_filed:'exec_command' }}
+                    {{ topic | detail_select_filed:'build_status' }}
                     <tr>
                         <td>部署的压缩包</td>
                         <td><a href="{{ topic.zip_file.url }}">{{ topic.zip_file }}</a></td>

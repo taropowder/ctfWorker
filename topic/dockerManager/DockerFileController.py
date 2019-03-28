@@ -1,18 +1,18 @@
+import json
 import os
-import docker
-from docker import Client
-
+from docker import DockerClient, APIClient
 
 class DockerFileController:
     def __init__(self):
-        self.client = Client(base_url='tcp://127.0.0.1:2375')
+        self.client = DockerClient(base_url='tcp://127.0.0.1:2375')
 
     def showRunningContainers(self):
         return self.client.containers()
 
-    def buildImage(self, dir_name):
-        path = os.path.join(os.getcwd(), 'files', dir_name)
-        self.client.build(path=path, tag=dir_name)
+    def buildImage(self, path, tag):
+        # path = os.path.join(os.getcwd(), 'files', dir_name)
+        self.client.build(path=path, tag=tag)
+
 
     def showImages(self):
         return self.client.images()
@@ -34,8 +34,5 @@ class DockerFileController:
 
 if __name__ == '__main__':
     d = DockerFileController()
-    d.runContainers('django:1.9.1-python3')
-
-    # d.buildImage('test')
-    # print(os.getcwd())
-    # print(os.path.join(os.getcwd(), 'files/1'))
+    # d.runContainers('django:1.9.1-python3')
+    d.buildImageWithLog()

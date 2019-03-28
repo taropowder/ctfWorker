@@ -1,2 +1,3 @@
 docker-py
 django==1.9
+celery

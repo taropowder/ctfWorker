@@ -22,6 +22,14 @@ class Topic(models.Model):
         ('Dockerfile', 'Dockerfile'),
         ('DockerCompose', 'DockerCompose'),
     )
+    BUILD_STATUS_CHOOSE = (
+        ('ready', '未BUILD'),
+        ('building', '正在build'),
+        ('success', 'build成功'),
+        ('fail', 'build失败'),
+    )
+    build_status = models.CharField('BUILD状态',choices=BUILD_STATUS_CHOOSE,default='ready', max_length=20)
+    build_log = models.TextField('BUILD日志', null=True)
     # path = models.CharField('Dockerfile/docker-compose.yml文件路径', max_length=60)
     port = models.IntegerField('需要映射出来的端口')
     build_type = models.CharField('Build方式', choices=BUILD_TYPE_CHOOSE, max_length=20)
@@ -44,4 +52,4 @@ class TopicInstance(models.Model):
 
 
 class TopicGroup(models.Model):
-    topic = models.ForeignKey(Topic, unique=True)
+    topic = models.OneToOneField(Topic)
