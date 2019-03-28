@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import json
 import os
+import re
 
 from celery import shared_task
 from docker import APIClient
@@ -40,6 +41,8 @@ def build_images(id):
         elif 'aux' in g:
             # 容器ＩＤ
             g = g['aux']['ID']
+            t.image_id = re.match(r'sha256:([A-Za-z0-9]{15})', g).group(1)
+
         t.build_log += g
         t.save()
     if status:

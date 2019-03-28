@@ -41,7 +41,7 @@ class Topic(models.Model):
     flag_is_unique = models.BooleanField('答案是否唯一')
     exec_command = models.TextField('需要执行的命令', null=True)
     zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid1()}', null=False)
-
+    image_id = models.CharField('镜像ID',null=True,max_length=16)
 
 class TopicInstance(models.Model):
     # 用team_id 为空的表示为训练题目
