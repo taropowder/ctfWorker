@@ -14,7 +14,7 @@
                     </button>
                     <a href="{% url 'topic_update' topic.id %}" class="layui-btn layui-btn-normal"
                        style="float: right;margin-bottom: 20px">修改</a>
-                            <button class="layui-btn layui-btn-warm" onclick="delete_topic()"
+                    <button class="layui-btn layui-btn-warm" onclick="build_images()"
                             style="float: right;margin-bottom: 20px;margin-left: 10px">BUILD镜像
                     </button>
                 </div>
@@ -40,12 +40,20 @@
                         <td>创建时间</td>
                         <td>{{ topic.create_time | date:"Y-m-d H:i:s" }}</td>
                     </tr>
+
                     {#                    {{topic | detail_filed:'create_time'}}#}
 
                 </table>
+                <pre class="layui-code" lay-height="150px" id="build_log">
+      </pre>
             </div>
         </div>
         <script>
+            layui.use('code', function () {
+
+                layui.code();
+                get_build_logs()
+            });
             function delete_topic() {
                 layui.use('layer', function () {
                     var layer = layui.layer;
@@ -57,5 +65,72 @@
                     });
                 });
             }
+
+            function get_build_logs() {
+                function success(text) {
+                    var textarea = document.getElementById("build_log");
+                    textarea.innerText = text;
+                }
+
+                function fail(code) {
+                    var textarea = document.getElementById('build_log');
+                    textarea.value = 'Error code: ' + code;
+                }
+
+                var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+
+                request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+                    if (request.readyState === 4) { // 成功完成
+                        // 判断响应结果:
+                        if (request.status === 200) {
+                            // 成功，通过responseText拿到响应的文本:
+                            return success(request.responseText);
+                        } else {
+                            // 失败，根据响应码判断失败原因:
+                            return fail(request.status);
+                        }
+                    } else {
+                        // HTTP请求还在继续...
+                    }
+                };
+
+// 发送请求:
+                request.open('GET', '{% url 'build_logs' topic.id %}');
+                request.send();
+
+            }
+
+            function build_images() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+
+                    var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+                    request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+                        if (request.readyState === 4) { // 成功完成
+                            // 判断响应结果:
+
+                            if (request.status === 200) {
+                                // 成功，通过responseText拿到响应的文本:
+                                layer.msg(request.responseText);
+                                {#                                return success(request.responseText);#}
+                            } else {
+                                // 失败，根据响应码判断失败原因:
+                                {#                                return fail(request.status);#}
+                            }
+                        } else {
+                            // HTTP请求还在继续...
+                        }
+                    };
+
+// 发送请求:
+                    request.open('POST', '{% url 'image_build' %}');
+                    request.setRequestHeader('X-CSRFTOKEN', '{{ csrf_token }}');
+                    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    request.send('topic={{ topic.id }}');
+                });
+            }
+
+
+            setInterval(get_build_logs, 3000);
         </script>
 {% endblock %}

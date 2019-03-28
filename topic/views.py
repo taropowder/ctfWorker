@@ -3,11 +3,14 @@ import os
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views.generic.detail import SingleObjectMixin
+
 from topic.models import Topic, TopicInstance, Team, TopicGroup
 from topic.forms import UploadForm
 from topic import utils
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from topic import tasks
+
 
 # Create your views here.
 
@@ -27,6 +30,7 @@ class TopicCardView(ListView):
     def get_queryset(self):
         qs = super(TopicCardView, self).get_queryset()
         return qs.filter(topic__type=self.kwargs['type'])
+
 
 def topic(request, type):
     content = {}
@@ -100,8 +104,8 @@ class TopicGroupDeleteView(DeleteView):
 
     get = DeleteView.http_method_not_allowed
 
-class buildImageView(View):
 
+class buildImageView(View):
     def get(self, request):
         # tasks.build_images
         # r = add.delay(2,3)
@@ -122,3 +126,39 @@ class buildImageView(View):
         else:
             print("Task has not yet run")
         return HttpResponse("OK")
+
+    def post(self, request):
+        message = "已开始BUILD"
+        id = request.POST.get('topic', None)
+        if id:
+            result = tasks.build_images.delay(id)
+            # TODO: 检查是否加入BUILD队列
+            # if result.ready():
+            #     message = "已经开始BUILD"
+            #     # print("Task has run")
+            #     if result.successful():
+            #         print("Result was: %s" % result.result)
+            #     else:
+            #         if isinstance(result.result, Exception):
+            #             print("Task failed due to raising an exception")
+            #             raise result.result
+            #         else:
+            #             print("Task failed without raising exception")
+            # else:
+            #     message = "未build，请检查celery服务是否开启"
+            return HttpResponse(message)
+        else:
+            return HttpResponse("ID错误")
+
+
+# class ImagesBuildLogs(View):
+#     def get(self, request, pk):
+#
+#         return HttpResponse(pk)
+
+class ImagesBuildLogs(SingleObjectMixin, View):
+    model = Topic
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return HttpResponse(self.object.build_log)
