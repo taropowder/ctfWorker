@@ -42,6 +42,7 @@ class Topic(models.Model):
     exec_command = models.TextField('需要执行的命令', null=True)
     zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid1()}', null=False)
     image_id = models.CharField('镜像ID', null=True, max_length=16)
+    in_group = models.BooleanField("是否加入试卷", default=False)
 
 
 class TopicInstance(models.Model):
@@ -53,5 +54,5 @@ class TopicInstance(models.Model):
     container_id = models.CharField('容器ID', max_length=16, null=True)
 
 
-class TopicGroup(models.Model):
-    topic = models.OneToOneField(Topic)
+# class TopicGroup(models.Model):
+#     topic = models.OneToOneField(Topic)

@@ -8,14 +8,14 @@
 
 
         <div class="layui-row layui-col-space10" style="padding: 15px;">
-            {% for topicgroup in topicgroup_list %}
+            {% for topic in topic_list %}
                 <div class="layui-col-md4">
                     <a href="#">
                         <div class="layui-card"
-                             onclick="showTopic('{{ request.get_host | url_parser:topicgroup.topic }}','{{ topicgroup.topic.title }}')">
-                            <div class="layui-card-header">{{ topicgroup.topic.title }}</div>
+                             onclick="showTopic('{{ request.get_host | url_parser:topic }}','{{ topic.title }}')">
+                            <div class="layui-card-header">{{ topic.title }}</div>
                             <div class="layui-card-body">
-                                {{ topicgroup.topic.introduction }}
+                                {{ topic.introduction }}
                             </div>
                         </div>
                     </a>

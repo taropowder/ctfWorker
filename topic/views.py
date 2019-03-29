@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic.detail import SingleObjectMixin
 from django.conf import settings
-from topic.models import Topic, TopicInstance, Team, TopicGroup
+from topic.models import Topic, TopicInstance, Team
 from topic.forms import UploadForm
 from topic import utils
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
@@ -23,7 +23,7 @@ class TopicCardView(ListView):
     if settings.RUNNING_MODEL == 'training':
         template_name = 'topic/topic_card_list_training.html'
 
-    model = TopicGroup
+    model = Topic
 
     def get_context_data(self, **kwargs):
         kwargs['type'] = self.kwargs['type']
@@ -31,7 +31,7 @@ class TopicCardView(ListView):
 
     def get_queryset(self):
         qs = super(TopicCardView, self).get_queryset()
-        return qs.filter(topic__type=self.kwargs['type'])
+        return qs.filter(type=self.kwargs['type']).filter(in_group=True)
 
 
 # def topic(request, type):
@@ -62,8 +62,11 @@ class TopicListView(ListView):
 
 class TopicGroupListView(ListView):
     template_name = 'topic/topic_group_list.html'
-    model = TopicGroup
+    model = Topic
 
+    def get_queryset(self):
+        qs = super(TopicGroupListView, self).get_queryset()
+        return qs.filter(in_group=True)
 
 class TopicDetailView(DetailView):
     template_name = 'topic/topic_detail.html'
@@ -92,25 +95,25 @@ class TopicDeleteView(DeleteView):
     get = DeleteView.http_method_not_allowed
 
 
-class TopicGroupJoinView(CreateView):
+class TopicGroupJoinView(UpdateView):
     get = View.http_method_not_allowed
-    model = TopicGroup
+    model = Topic
     success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
-    fields = ('topic',)
+    fields = ('in_group',)
 
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 
 
-class TopicGroupDeleteView(DeleteView):
-    model = TopicGroup
+class TopicGroupDeleteView(UpdateView):
+    model = Topic
     success_url = reverse_lazy('topic_group_list')
-
+    fields = ('in_group',)
     get = DeleteView.http_method_not_allowed
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        utils.removeContainerFromDockerFile(self.object.topic.id)
+        utils.removeContainerFromDockerFile(self.object.id)
         return super(TopicGroupDeleteView, self).post(request, *args, **kwargs)
 
 
@@ -153,21 +156,21 @@ class TopicInstanceListView(ListView):
     template_name = 'topic/topicinstance_list.html'
     model = Topic
 
-    # def get_queryset(self):
-    #     qs = super(TopicInstanceListView, self).get_queryset()
-    #     return qs.filter(g)
+    def get_queryset(self):
+        qs = super(TopicInstanceListView, self).get_queryset()
+        return qs.filter(in_group=True)
 
 
 class TopicGroupStartView(View):
 
     def post(self, request):
-        topic_group = TopicGroup.objects.all()
+        topic_group = Topic.objects.filter(in_group=True)
         result = []
         for topic in topic_group:
-            if topic.topic.build_status == 'success':
-                if topic.topic.build_type == 'Dockerfile':
-                    if not TopicInstance.objects.filter(topic=topic.topic).first():
-                        result.append(utils.runContainerFromDockerFile(topic.topic))
+            if topic.build_status == 'success':
+                if topic.build_type == 'Dockerfile':
+                    if not TopicInstance.objects.filter(topic=topic).first():
+                        result.append(utils.runContainerFromDockerFile(topic))
 
         return JsonResponse(result, safe=False)
 

@@ -26,17 +26,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for topic_group in topicgroup_list %}
+                    {% for topic in topic_list %}
                         <tr>
                             {#                <td>{{ topic_group.topic.id }}</td>#}
                             <td>
-                                <a href="{% url 'topic_detail' topic_group.topic.id %}">{{ topic_group.topic.title }}</a>
+                                <a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a>
                             </td>
-                            <td>{{ topic_group.topic.type }}</td>
-                            <td>{{ topic_group.topic.port }}</td>
+                            <td>{{ topic.type }}</td>
+                            <td>{{ topic.port }}</td>
                             <td>
                                 <button class="layui-btn layui-btn-warm"
-                                        onclick="delete_topic_group({{ topic_group.topic.id }},'{% url 'topic_group_delete' topic_group.id %}')">
+                                        onclick="delete_topic_group('{% url 'topic_group_delete' topic.id %}')">
                                     移除题目
                                 </button>
                             </td>
@@ -49,14 +49,14 @@
             </div>
         </div>
         <script>
-            function delete_topic_group(id, url) {
+            function delete_topic_group(url) {
                 layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
                         type: 1,
                         closeBtn: 2,
                         title: ['确认移除题组并关闭题目？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='" + url + "' method='post'>{% csrf_token %}<input type='hidden' name='topic' value='" + id + "' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='" + url + "' method='post'>{% csrf_token %}<input type='hidden' name='is_group' value='false' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
                     });
                 });
             }
