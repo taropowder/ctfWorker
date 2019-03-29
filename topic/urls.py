@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^/build_logs/(?P<pk>\d+)/', topic_views.ImagesBuildLogs.as_view(), name='build_logs'),
     url(r'^/(?P<type>[A-Za-z0-9]+)/', topic_views.TopicCardView.as_view(), name='type'),
     url(r'^/instance_list/', topic_views.TopicInstanceListView.as_view(), name='instance_list'),
+    url(r'^/start_all/', topic_views.TopicGroupStartView.as_view(), name='start_all'),
 
 ]

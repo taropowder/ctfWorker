@@ -1,7 +1,7 @@
 import os
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic.detail import SingleObjectMixin
 from django.conf import settings
@@ -34,10 +34,10 @@ class TopicCardView(ListView):
         return qs.filter(topic__type=self.kwargs['type'])
 
 
-def topic(request, type):
-    content = {}
-    content['type'] = type
-    return render(request, 'topic.html', content)
+# def topic(request, type):
+#     content = {}
+#     content['type'] = type
+#     return render(request, 'topic.html', content)
 
 
 class TopicCreate(CreateView):
@@ -47,7 +47,8 @@ class TopicCreate(CreateView):
     success_url = reverse_lazy('topic_list')  # 成功添加表对象后 跳转到的页面
 
     def form_valid(self, form):
-        print(form.zip_file)
+        self.object = form.save()
+        utils.un_zip(self.object.zip_file.path, self.object.build_name)
         return super(TopicCreate, self).form_valid(form)
 
     def form_invalid(self, form):  # 定义表对象没有添加失败后跳转到的页面。
@@ -78,6 +79,7 @@ class TopicUpdateView(UpdateView):
         return reverse_lazy('topic_detail', kwargs=self.kwargs)
 
     def form_valid(self, form):
+        form.empty_permitted =True
         self.object = form.save()
         utils.un_zip(self.object.zip_file.path, self.object.build_name)
         return HttpResponseRedirect(self.get_success_url())
@@ -106,28 +108,14 @@ class TopicGroupDeleteView(DeleteView):
 
     get = DeleteView.http_method_not_allowed
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        utils.removeContainerFromDockerFile(self.object.topic.id)
+        return super(TopicGroupDeleteView, self).post(request, *args, **kwargs)
+
 
 class buildImageView(View):
-    def get(self, request):
-        # tasks.build_images
-        # r = add.delay(2,3)
-        # id = request.GET.get('topic', 1)
-        # t = Topic.objects.get(id=id)
-        # t = '123'
-        result = tasks.build_images.delay(request.GET.get('topic', 1))
-        if result.ready():
-            print("Task has run")
-            if result.successful():
-                print("Result was: %s" % result.result)
-            else:
-                if isinstance(result.result, Exception):
-                    print("Task failed due to raising an exception")
-                    raise result.result
-                else:
-                    print("Task failed without raising exception")
-        else:
-            print("Task has not yet run")
-        return HttpResponse("OK")
+    get = View.http_method_not_allowed
 
     def post(self, request):
         message = "已开始BUILD"
@@ -153,11 +141,6 @@ class buildImageView(View):
             return HttpResponse("ID错误")
 
 
-# class ImagesBuildLogs(View):
-#     def get(self, request, pk):
-#
-#         return HttpResponse(pk)
-
 class ImagesBuildLogs(SingleObjectMixin, View):
     model = Topic
 
@@ -169,3 +152,23 @@ class ImagesBuildLogs(SingleObjectMixin, View):
 class TopicInstanceListView(ListView):
     template_name = 'topic/topicinstance_list.html'
     model = Topic
+
+    # def get_queryset(self):
+    #     qs = super(TopicInstanceListView, self).get_queryset()
+    #     return qs.filter(g)
+
+
+class TopicGroupStartView(View):
+
+    def post(self, request):
+        topic_group = TopicGroup.objects.all()
+        result = []
+        for topic in topic_group:
+            if topic.topic.build_status == 'success':
+                if topic.topic.build_type == 'Dockerfile':
+                    if not TopicInstance.objects.filter(topic=topic.topic).first():
+                        result.append(utils.runContainerFromDockerFile(topic.topic))
+
+        return JsonResponse(result, safe=False)
+
+

@@ -4,6 +4,7 @@ from .models import Topic
 
 
 class UploadForm(forms.ModelForm):
+    empty_permitted = True
     port = forms.IntegerField(
         label="映射端口",
         widget=widgets.NumberInput(attrs={'class': "layui-input", 'placeholder': '0-65535'})
@@ -31,6 +32,7 @@ class UploadForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': "layui-input"})
     )
     exec_command = forms.CharField(
+        required=False,
         widget=forms.TextInput(attrs={'class': "layui-input"})
     )
 

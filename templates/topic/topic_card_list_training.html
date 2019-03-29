@@ -12,7 +12,7 @@
                 <div class="layui-col-md4">
                     <a href="#">
                         <div class="layui-card"
-                             onclick="showTopic('{{ request.get_host | url_parser:topicgroup.topic.port }}','{{ topicgroup.topic.title }}')">
+                             onclick="showTopic('{{ request.get_host | url_parser:topicgroup.topic }}','{{ topicgroup.topic.title }}')">
                             <div class="layui-card-header">{{ topicgroup.topic.title }}</div>
                             <div class="layui-card-body">
                                 {{ topicgroup.topic.introduction }}
@@ -29,8 +29,13 @@
     </div>
     <script>
         function showTopic(url, title) {
+
             layui.use('layer', function () {
                 var layer = layui.layer;
+                if (url === "") {
+                    layer.msg('该题目尚未开放，请等待');
+                    return
+                }
                 layer.open({
                     type: 1
                     ,

@@ -1,55 +1,122 @@
 {% extends 'layout.html' %}
 {% block root %}
     <div class="layui-row">
-            <div class="layui-row layui-col-space10" >
-        <div class="layui-col-md2"></div>
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2"></div>
             <div class="layui-col-md8">
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                <legend>题组</legend>
-            </fieldset>
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                    <legend>题组</legend>
+                </fieldset>
+                <button class="layui-btn layui-btn-danger" onclick="start_all_topic()"
+                        style="float: right;margin-bottom: 20px;margin-left: 10px">开启全部题目
+                </button>
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                        <col width="200">
+                        <col width="200">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>题目名称</th>
+                        <th>题目类型</th>
+                        <th>题目端口</th>
+                        <th>移除题组</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for topic_group in topicgroup_list %}
+                        <tr>
+                            {#                <td>{{ topic_group.topic.id }}</td>#}
+                            <td>
+                                <a href="{% url 'topic_detail' topic_group.topic.id %}">{{ topic_group.topic.title }}</a>
+                            </td>
+                            <td>{{ topic_group.topic.type }}</td>
+                            <td>{{ topic_group.topic.port }}</td>
+                            <td>
+                                <button class="layui-btn layui-btn-warm"
+                                        onclick="delete_topic_group({{ topic_group.topic.id }},'{% url 'topic_group_delete' topic_group.id %}')">
+                                    移除题目
+                                </button>
+                            </td>
 
-            <table class="layui-table" lay-skin="line">
-                <colgroup>
-                    <col width="150">
-                    <col width="150">
-                    <col width="200">
-                    <col>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>题目名称</th>
-                    <th>题目类型</th>
-                    <th>题目端口</th>
-                    <th>移除题组</th>
-                    <th>关闭题目</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for topic_group in topicgroup_list %}
-                <tr>
-{#                <td>{{ topic_group.topic.id }}</td>#}
-                    <td><a href="{% url 'topic_detail' topic_group.topic.id %}">{{ topic_group.topic.title }}</a></td>
-                    <td>{{ topic_group.topic.type }}</td>
-                    <td>{{ topic_group.topic.port }}</td>
-                    <td><button class="layui-btn layui-btn-warm" onclick="delete_topic_group({{ topic_group.topic.id  }},'{% url 'topic_group_delete' topic_group.id %}')" >移除题目</button></td>
-                    <td><button class="layui-btn layui-btn-danger" onclick="join_topic_group({{ topic.id }})">关闭题目</button></td>
-                </tr>
-                {% endfor %}
+                        </tr>
+                    {% endfor %}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
- <script>
-            function delete_topic_group(id,url) {
+        <script>
+            function delete_topic_group(id, url) {
                 layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
                         type: 1,
                         closeBtn: 2,
-                        title: ['确认加入？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='"+url+"' method='post'>{% csrf_token %}<input type='hidden' name='topic' value='"+id+"' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
+                        title: ['确认移除题组并关闭题目？', 'font-size:18px;'],
+                        content: "<div align='center' ><form action='" + url + "' method='post'>{% csrf_token %}<input type='hidden' name='topic' value='" + id + "' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
                     });
+                });
+            }
+
+            function start_all_topic(id, url) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 1,
+                        closeBtn: 2,
+                        title: ['确认要开启所有题目？', 'font-size:18px;'],
+                        btn: ['确认开启'],
+                        success: function (layero) {
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                onclick: 'post_to_start()'
+                            });
+                        }
+                        {#                        content: "<div align='center' ><form action='" + url + "' method='post'>{% csrf_token %}<input type='hidden' name='topic' value='" + id + "' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String#}
+                    });
+
+                });
+            }
+
+            function post_to_start() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+                    request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+                        if (request.readyState === 4) { // 成功完成
+                            // 判断响应结果:
+
+                            if (request.status === 200) {
+                                var res = JSON.parse(request.responseText);
+                                console.log(res);
+                                if (Object.keys(res).length === 0){
+                                 layer.msg("所有题目已经开启");
+                                }else {
+                                    for (var i in res){
+                                        var j = i * 1000;
+                                        setTimeout(function(){ layer.msg(res[i]['message']);}, j);
+                                    }
+                                }
+
+
+                                {#                                return success(request.responseText);#}
+                            } else {
+                                // 失败，根据响应码判断失败原因:
+                                {#                                return fail(request.status);#}
+                            }
+                        } else {
+                            // HTTP请求还在继续...
+                        }
+                    };
+
+// 发送请求:
+                    request.open('POST', '{% url 'start_all' %}');
+                    request.setRequestHeader('X-CSRFTOKEN', '{{ csrf_token }}');
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    request.send();
                 });
             }
         </script>

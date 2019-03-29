@@ -42,7 +42,8 @@ class DockerFileController:
 
 if __name__ == '__main__':
     d = DockerFileController()
-    print(d.getContainerStatus('17b2884cbd10'))
+    # d.runContainer()
+    # print(d.getContainerStatus('17b2884cbd10'))
     # d.runContainers('django:1.9.1-python3')
     # d.runContainersWithId('123', '123', 'python /usr/src/nuckaggle/manage.py runserver 0.0.0.0:8000')
     # d.buildImageWithLog()

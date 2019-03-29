@@ -88,14 +88,17 @@ def fill_form_filed(model: models.Model, field=None):
 
 
 @register.filter(name="url_parser", filed=None)
-def fill_form_filed(host: str, port=None):
+def fill_form_filed(host: str, topic: Topic):
     if ':' in host:
         host = host.split(':')[0]
-    if port:
+    if settings.RUNNING_MODEL == 'training':
+        # 其他方式类型题目补充： 如只有URL方式
+        instance = TopicInstance.objects.filter(topic=topic).first()
+        if not instance:
+            return ""
+        else:
+            port = instance.port
         url = f"http://{host}:{port}"
-    else:
-        url = f"http://{host}"
-    # getattr(models, 'get_' + field + '_display'))
     return mark_safe(url)
 
 
@@ -141,3 +144,20 @@ def get_topic_instance(topic: Topic):
     """
 
     return mark_safe(html_header + html_body + html_footer)
+
+
+@register.filter(name="card_show_training")
+def card_show():
+    html = """
+     <div class="layui-col-md4">
+                    <a href="#">
+                        <div class="layui-card"
+                             onclick="showTopic('{{ request.get_host | url_parser:topicgroup.topic.port }}','{{ topicgroup.topic.title }}')">
+                            <div class="layui-card-header">{{ topicgroup.topic.title }}</div>
+                            <div class="layui-card-body">
+                                {{ topicgroup.topic.introduction }}
+                            </div>
+                        </div>
+                    </a>
+
+                </div>"""
