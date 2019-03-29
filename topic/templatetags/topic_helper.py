@@ -2,6 +2,9 @@ from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.db import models
+from django.conf import settings
+from topic.models import Topic, TopicInstance
+from topic.utils import getContainerStatus
 
 register = template.Library()
 
@@ -85,7 +88,7 @@ def fill_form_filed(model: models.Model, field=None):
 
 
 @register.filter(name="url_parser", filed=None)
-def fill_form_filed(host:str, port=None):
+def fill_form_filed(host: str, port=None):
     if ':' in host:
         host = host.split(':')[0]
     if port:
@@ -94,3 +97,47 @@ def fill_form_filed(host:str, port=None):
         url = f"http://{host}"
     # getattr(models, 'get_' + field + '_display'))
     return mark_safe(url)
+
+
+@register.filter(name="instance_filter")
+def get_topic_instance(topic: Topic):
+    instances = TopicInstance.objects.filter(topic=topic.id)
+    if topic.build_type == 'Dockerfile':
+        html_header = f"""
+                 <div class="layui-colla-item">
+                                <h2 class="layui-colla-title">{topic.title}</h2>
+                                <div class="layui-colla-content">
+                                    <table class="layui-table" lay-skin="line">
+                                        <thead>
+                                        <th>题目端口</th>
+                                        <th>题目队伍</th> 
+                                        <th>容器ID</th> 
+                                        <th>容器状态</th>
+                                        </thead>
+                                        <tbody>
+        """
+        html_body_templates = """
+        <tr>
+        <td>{port}</td>
+        <td>{team}</td>
+        <td>{id}</td>
+        <td>{status}</td>
+        </tr>
+        """
+    html_body = ""
+    for instance in instances:
+        if instance.team:
+            team = instance.team.name
+        else:
+            team = "ALL"
+        html_body += html_body_templates.format(port=instance.port, team=team, id=instance.container_id,
+                                                status=getContainerStatus(instance.container_id))
+    html_footer = """
+    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+    """
+
+    return mark_safe(html_header + html_body + html_footer)

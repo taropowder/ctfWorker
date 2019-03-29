@@ -28,7 +28,7 @@ class Topic(models.Model):
         ('success', 'build成功'),
         ('fail', 'build失败'),
     )
-    build_status = models.CharField('BUILD状态',choices=BUILD_STATUS_CHOOSE,default='ready', max_length=20)
+    build_status = models.CharField('BUILD状态', choices=BUILD_STATUS_CHOOSE, default='ready', max_length=20)
     build_log = models.TextField('BUILD日志', null=True)
     # path = models.CharField('Dockerfile/docker-compose.yml文件路径', max_length=60)
     port = models.IntegerField('需要映射出来的端口')
@@ -41,14 +41,16 @@ class Topic(models.Model):
     flag_is_unique = models.BooleanField('答案是否唯一')
     exec_command = models.TextField('需要执行的命令', null=True)
     zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid1()}', null=False)
-    image_id = models.CharField('镜像ID',null=True,max_length=16)
+    image_id = models.CharField('镜像ID', null=True, max_length=16)
+
 
 class TopicInstance(models.Model):
     # 用team_id 为空的表示为训练题目
-    team_id = models.ForeignKey(Team, null=True)
-    topic_id = models.ForeignKey(Topic)
+    team = models.ForeignKey(Team, null=True)
+    topic = models.ForeignKey(Topic)
     port = models.IntegerField('题目端口')
     flag = models.CharField('题目答案', max_length=50)
+    container_id = models.CharField('容器ID', max_length=16, null=True)
 
 
 class TopicGroup(models.Model):

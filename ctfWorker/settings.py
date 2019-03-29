@@ -122,3 +122,6 @@ STATICFILES_DIRS = [
 
 CELERY_RESULT_BACKEND = 'rpc'
 # result_backend = 'rpc'
+
+# 训练模式(training)和比赛模式(game)
+RUNNING_MODEL = 'training'

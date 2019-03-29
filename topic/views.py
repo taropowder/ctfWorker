@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.detail import SingleObjectMixin
-
+from django.conf import settings
 from topic.models import Topic, TopicInstance, Team, TopicGroup
 from topic.forms import UploadForm
 from topic import utils
@@ -20,7 +20,9 @@ def home(request):
 
 
 class TopicCardView(ListView):
-    template_name = 'topic/topic_card_list.html'
+    if settings.RUNNING_MODEL == 'training':
+        template_name = 'topic/topic_card_list_training.html'
+
     model = TopicGroup
 
     def get_context_data(self, **kwargs):
@@ -162,3 +164,8 @@ class ImagesBuildLogs(SingleObjectMixin, View):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         return HttpResponse(self.object.build_log)
+
+
+class TopicInstanceListView(ListView):
+    template_name = 'topic/topicinstance_list.html'
+    model = Topic

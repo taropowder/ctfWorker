@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block root %}
+    {% load topic_helper %}
+    <div class="layui-row">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2"></div>
+            <div class="layui-col-md8">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                    <legend>题目状态</legend>
+                </fieldset>
+                <div class="layui-collapse" lay-filter="test">
+                    {% for topic in topic_list %}
+                        {{ topic | instance_filter }}
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+        <script>
+
+        </script>
+{% endblock %}
