@@ -101,3 +101,4 @@ mooder/settings_development.py
 topic/files/*
 storage/*
 .DS_Store
+.conf

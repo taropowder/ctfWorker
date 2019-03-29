@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from configparser import ConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -124,4 +125,7 @@ CELERY_RESULT_BACKEND = 'rpc'
 # result_backend = 'rpc'
 
 # 训练模式(training)和比赛模式(game)
-RUNNING_MODEL = 'training'
+# RUNNING_MODEL = 'training'
+config = ConfigParser()
+config.read('.conf', encoding='UTF-8')
+RUNNING_MODEL = config['running']['type']
