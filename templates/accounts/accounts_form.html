@@ -10,15 +10,16 @@
             {% endif %}
             <form class="layui-form" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.title | select }}
-                {{ form.build_name | select }}
-                {{ form.port | filed }}
-                {{ form.type | select }}
-                {{ form.build_type | select }}
-                {{ form.flag_is_unique | select }}
-                {{ form.exec_command | select }}
-                {{ form.introduction | select }}
-                {{ form.zip_file | select }}
+                {{ form.username | select }}
+                {{ form.school | select }}
+{#                {{ form.build_name | select }}#}
+{#                {{ form.port | filed }}#}
+{#                {{ form.type | select }}#}
+{#                {{ form.build_type | select }}#}
+{#                {{ form.flag_is_unique | select }}#}
+{#                {{ form.exec_command | select }}#}
+{#                {{ form.introduction | select }}#}
+{#                {{ form.zip_file | select }}#}
 
 {#                <div class="layui-form-item">#}
 {#                    <label class="layui-form-label">上传文件</label>#}
