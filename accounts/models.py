@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from topic.models import Team
 
 
 # Create your models here.
@@ -40,9 +41,10 @@ class MyUserManager(BaseUserManager):
 
 
 class Member(AbstractUser):
-    username = models.CharField('用户名', max_length=64, unique=True )
+    username = models.CharField('用户名', max_length=64, unique=True)
     email = models.EmailField('邮箱', max_length=255, unique=True)
     school = models.CharField('学校', max_length=30)
+    team = models.ForeignKey(Team, verbose_name="队伍", on_delete='SET_NULL', null=True, blank=True)
     # grade = models.CharField
     # USERNAME_FIELD = 'username'
     # REQUIRED_FIELDS = ['username']

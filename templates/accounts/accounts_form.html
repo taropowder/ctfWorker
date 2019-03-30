@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% load topic_helper %}
+{% block root %}
+
+    <div class="layui-row layui-col-space10" style="padding: 15px;">
+        <div class="layui-col-md2"></div>
+        <div class="layui-col-md8">
+            {% if form.errors %}
+            {{ form.errors }}
+            {% endif %}
+            <form class="layui-form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.title | select }}
+                {{ form.build_name | select }}
+                {{ form.port | filed }}
+                {{ form.type | select }}
+                {{ form.build_type | select }}
+                {{ form.flag_is_unique | select }}
+                {{ form.exec_command | select }}
+                {{ form.introduction | select }}
+                {{ form.zip_file | select }}
+
+{#                <div class="layui-form-item">#}
+{#                    <label class="layui-form-label">上传文件</label>#}
+{#                    <div class="layui-input-block">#}
+{#                        <input type="file"  name="files" id="upload" />#}
+{#                        <a href="#" style="color: #00F7DE">下载</a>#}
+{#                    </div>#}
+{#                </div>#}
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit id="form_submit">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                //Demo
+              function upload() {
+                    var element = document.getElementById('upload');
+                    console.log('123123');
+                    element.click();
+                }
+                layui.use('form', function () {
+                    var form = layui.form;
+                });
+
+{#                layui.use('upload', function () {#}
+{#                    var $ = layui.jquery#}
+{#                        , upload = layui.upload;#}
+{#                    upload.render({ //允许上传的文件后缀#}
+{#                        elem: '#test4'#}
+{#                        , url: '/upload/'#}
+{#                        , auto: false#}
+{#                        , accept: 'file' //普通文件#}
+{#                        , bindAction: '#form_submit'#}
+{#                        , exts: 'zip|rar|7z' //只允许上传压缩文件#}
+{#                        , done: function (res) {#}
+{#                            console.log(res)#}
+{#                        }#}
+{#                    });#}
+{#                })#}
+
+            </script>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from allauth.account.forms import LoginForm, PasswordField, SignupForm
 from django import forms
-from django.forms import widgets
+from .models import Member
 
 
 class MySignupForm(SignupForm):
@@ -19,3 +19,11 @@ class MyLoginForm(LoginForm):
         self.fields['password'].widget = forms.PasswordInput(attrs={'class': 'layui-input'})
         self.fields['login'].widget = forms.TextInput(attrs={'class': 'layui-input'})
 
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = [
+            'username',
+            'team',
+        ]

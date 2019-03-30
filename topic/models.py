@@ -6,7 +6,7 @@ from uuid import uuid1
 
 
 class Team(models.Model):
-    name = models.CharField('队伍名称', max_length=50)
+    name = models.CharField('队伍名称', max_length=50, unique=True)
     uuid = models.CharField('队伍ID', max_length=8, unique=True)
     create_time = models.DateTimeField(auto_now_add=True)
 

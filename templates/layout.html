@@ -48,8 +48,8 @@
                        {{ request.user.username }}
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="{% url 'account_detail' request.user.id  %}">个人资料</a></dd>
+                        <dd><a href="">组队情况</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item"><form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<input type="submit" style="display: none" id="logout"></form><a href="#" onclick="document.getElementById('logout').click();return false">注销</a></li>

@@ -21,6 +21,7 @@ from topic import views as topic_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('accounts/', include('accounts.urls')),
     path('', topic_views.home),
     path('topic', include('topic.urls')),
 
