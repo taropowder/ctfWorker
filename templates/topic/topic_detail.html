@@ -62,7 +62,7 @@
                         type: 1,
                         closeBtn: 2,
                         title: ['加入题组', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='{% url 'topic_delete' topic.id %}' method='post'>{% csrf_token %}<input class='layui-btn layui-btn-danger'  type='submit' value='确认删除'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='{% url 'topic_delete' topic.id %}' method='post'>"+'{% csrf_token %}'+"<input class='layui-btn layui-btn-danger'  type='submit' value='确认删除'></form></div>" //这里content是一个普通的String
                     });
                 });
             }

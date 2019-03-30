@@ -1,5 +1,3 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from .forms import UserForm
 # Create your views here.
 from django.views.generic import DetailView, UpdateView

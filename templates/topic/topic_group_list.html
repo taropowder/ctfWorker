@@ -56,7 +56,7 @@
                         type: 1,
                         closeBtn: 2,
                         title: ['确认移除题组并关闭题目？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='" + url + "' method='post'>{% csrf_token %}<input type='hidden' name='is_group' value='false' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='" + url + "' method='post'>"+'{% csrf_token %}'+"<input type='hidden' name='is_group' value='false' ><input class='layui-btn layui-btn-danger'  type='submit' value='移除该题目'></form></div>" //这里content是一个普通的String
                     });
                 });
             }

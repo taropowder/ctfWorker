@@ -32,7 +32,7 @@ class MyUserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
-            nickname=username,
+            username=username,
         )
         user.is_staff = True
         user.is_superuser = True
