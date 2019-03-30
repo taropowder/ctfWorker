@@ -1,2 +1,12 @@
 [running]
 type=training
+
+[mail]
+email_host=smtp.qq.com
+email_port=25
+email_host_user='xxxx@qq.com'
+email_host_password=xxxxxxxx'
+email_use_tls=True
+email_from='xxxxx@qq.com'
+default_form_email='xxxxxxx@qq.com'
+account_email_verification='none'

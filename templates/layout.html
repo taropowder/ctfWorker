@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>CTFWORKER</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css"/>
     <script src="/static/layui/layui.js"></script>
 
@@ -40,29 +40,34 @@
                 </dl>
             </li>
         </ul>
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
-        </ul>
+        {% if request.user.is_authenticated %}
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                       {{ request.user.username }}
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        {% else %}
+            请登陆，这里放登陆链接
+        {% endif %}
+
     </div>
 
 
-    <div class="layui-body" style="left: 0px" >
+    <div class="layui-body" style="left: 0px">
         <!-- 内容主体区域 -->
 
 
-            {% block root %}
+        {% block root %}
 
-            {% endblock %}
+        {% endblock %}
 
 
 
@@ -71,7 +76,7 @@
             © Power By CTFWORKER
         </div>
     </div>
-{#    </div>#}
+    {#    </div>#}
     <script>
         //JavaScript代码区域
         layui.use('element', function () {

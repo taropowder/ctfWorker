@@ -1,8 +1,8 @@
 import os
 
-from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 from django.conf import settings
 from topic.models import Topic, TopicInstance, Team
@@ -68,6 +68,7 @@ class TopicGroupListView(ListView):
         qs = super(TopicGroupListView, self).get_queryset()
         return qs.filter(in_group=True)
 
+
 class TopicDetailView(DetailView):
     template_name = 'topic/topic_detail.html'
     model = Topic
@@ -82,7 +83,7 @@ class TopicUpdateView(UpdateView):
         return reverse_lazy('topic_detail', kwargs=self.kwargs)
 
     def form_valid(self, form):
-        form.empty_permitted =True
+        form.empty_permitted = True
         self.object = form.save()
         utils.un_zip(self.object.zip_file.path, self.object.build_name)
         return HttpResponseRedirect(self.get_success_url())
@@ -162,7 +163,6 @@ class TopicInstanceListView(ListView):
 
 
 class TopicGroupStartView(View):
-
     def post(self, request):
         topic_group = Topic.objects.filter(in_group=True)
         result = []
@@ -173,5 +173,3 @@ class TopicGroupStartView(View):
                         result.append(utils.runContainerFromDockerFile(topic))
 
         return JsonResponse(result, safe=False)
-
-
