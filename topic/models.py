@@ -44,16 +44,16 @@ class Topic(models.Model):
     image_id = models.CharField('镜像ID', null=True, max_length=16)
     in_group = models.BooleanField("是否加入试卷", default=False)
     flag = models.CharField('FLAG', max_length=50, null=True)
+    integral = models.IntegerField('积分', default=0)
 
 
 class TopicInstance(models.Model):
     # 用team_id 为空的表示为训练题目
-    team = models.ForeignKey(Team, null=True,on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic,on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     port = models.IntegerField('题目端口')
     flag = models.CharField('题目答案', max_length=50)
     container_id = models.CharField('容器ID', max_length=16, null=True)
-
 
 # class TopicGroup(models.Model):
 #     topic = models.OneToOneField(Topic)

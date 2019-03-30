@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from topic.models import Team
+from topic.models import Team, TopicInstance
 
 
 # Create your models here.
@@ -57,3 +58,11 @@ class Member(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class SolveProblem(models.Model):
+    member = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="做题人", on_delete='CASCADE')
+    topic = models.ForeignKey(TopicInstance, verbose_name="题目", on_delete='CASCADE')
+
+    class Meta:
+        unique_together = ["member", "topic"]

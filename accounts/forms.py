@@ -1,7 +1,7 @@
 from allauth.account.forms import LoginForm, PasswordField, SignupForm
 from django import forms
 from django.forms import widgets
-from .models import Member
+from .models import Member, SolveProblem
 
 
 class MySignupForm(SignupForm):
@@ -35,3 +35,15 @@ class UserForm(forms.ModelForm):
             'team',
             'school',
         ]
+
+
+class SolveProblemForm(forms.ModelForm):
+    flag = forms.CharField()
+    # member = forms.CharField(required=False)
+
+
+    class Meta:
+        model = SolveProblem
+        fields = {
+            'topic',
+        }
