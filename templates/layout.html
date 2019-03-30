@@ -52,10 +52,13 @@
                         <dd><a href="">安全设置</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
+                <li class="layui-nav-item"><form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<input type="submit" style="display: none" id="logout"></form><a href="#" onclick="document.getElementById('logout').click();return false">注销</a></li>
             </ul>
         {% else %}
-            请登陆，这里放登陆链接
+             <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item"><a href="{% url 'account_signup' %}">注册</a></li>
+                <li class="layui-nav-item"><a href="{% url 'account_login' %}">登录</a></li>
+            </ul>
         {% endif %}
 
     </div>

@@ -45,7 +45,7 @@
                         type: 1,
                         closeBtn: 2,
                         title: ['确认加入？', 'font-size:18px;'],
-                        content: "<div align='center' ><form action='"+url+"' method='post'>{% csrf_token %}<input type='hidden' name='in_group' value='true' ><input class='layui-btn layui-btn-danger'  type='submit' value='加入题组'></form></div>" //这里content是一个普通的String
+                        content: "<div align='center' ><form action='"+url+"' method='post'>"+'{% csrf_token %}'+"<input type='hidden' name='in_group' value='true' ><input class='layui-btn layui-btn-danger'  type='submit' value='加入题组'></form></div>" //这里content是一个普通的String
                     });
                 });
             }

@@ -8,6 +8,7 @@ from django.conf import settings
 from topic.models import Topic, TopicInstance, Team
 from topic.forms import UploadForm
 from topic import utils
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from topic import tasks
 
@@ -19,7 +20,7 @@ def home(request):
     return render(request, 'index.html', {'form': form})
 
 
-class TopicCardView(ListView):
+class TopicCardView(LoginRequiredMixin, ListView):
     if settings.RUNNING_MODEL == 'training':
         template_name = 'topic/topic_card_list_training.html'
 
@@ -40,7 +41,7 @@ class TopicCardView(ListView):
 #     return render(request, 'topic.html', content)
 
 
-class TopicCreate(CreateView):
+class TopicCreate(LoginRequiredMixin, CreateView):
     model = Topic
     form_class = UploadForm  # 表类
     template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
@@ -55,12 +56,12 @@ class TopicCreate(CreateView):
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 
 
-class TopicListView(ListView):
+class TopicListView(LoginRequiredMixin, ListView):
     template_name = 'topic/topic_list.html'
     model = Topic
 
 
-class TopicGroupListView(ListView):
+class TopicGroupListView(LoginRequiredMixin, ListView):
     template_name = 'topic/topic_group_list.html'
     model = Topic
 
@@ -69,12 +70,12 @@ class TopicGroupListView(ListView):
         return qs.filter(in_group=True)
 
 
-class TopicDetailView(DetailView):
+class TopicDetailView(LoginRequiredMixin, DetailView):
     template_name = 'topic/topic_detail.html'
     model = Topic
 
 
-class TopicUpdateView(UpdateView):
+class TopicUpdateView(LoginRequiredMixin, UpdateView):
     model = Topic
     form_class = UploadForm
     template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
@@ -89,14 +90,14 @@ class TopicUpdateView(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class TopicDeleteView(DeleteView):
+class TopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Topic
     success_url = reverse_lazy('topic_list')
 
     get = DeleteView.http_method_not_allowed
 
 
-class TopicGroupJoinView(UpdateView):
+class TopicGroupJoinView(LoginRequiredMixin, UpdateView):
     get = View.http_method_not_allowed
     model = Topic
     success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
@@ -106,7 +107,7 @@ class TopicGroupJoinView(UpdateView):
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 
 
-class TopicGroupDeleteView(UpdateView):
+class TopicGroupDeleteView(LoginRequiredMixin, UpdateView):
     model = Topic
     success_url = reverse_lazy('topic_group_list')
     fields = ('in_group',)
@@ -118,7 +119,7 @@ class TopicGroupDeleteView(UpdateView):
         return super(TopicGroupDeleteView, self).post(request, *args, **kwargs)
 
 
-class buildImageView(View):
+class buildImageView(LoginRequiredMixin, View):
     get = View.http_method_not_allowed
 
     def post(self, request):
@@ -145,7 +146,7 @@ class buildImageView(View):
             return HttpResponse("ID错误")
 
 
-class ImagesBuildLogs(SingleObjectMixin, View):
+class ImagesBuildLogs(LoginRequiredMixin, SingleObjectMixin, View):
     model = Topic
 
     def get(self, request, *args, **kwargs):
@@ -153,7 +154,7 @@ class ImagesBuildLogs(SingleObjectMixin, View):
         return HttpResponse(self.object.build_log)
 
 
-class TopicInstanceListView(ListView):
+class TopicInstanceListView(LoginRequiredMixin, ListView):
     template_name = 'topic/topicinstance_list.html'
     model = Topic
 
@@ -162,7 +163,7 @@ class TopicInstanceListView(ListView):
         return qs.filter(in_group=True)
 
 
-class TopicGroupStartView(View):
+class TopicGroupStartView(LoginRequiredMixin, View):
     def post(self, request):
         topic_group = Topic.objects.filter(in_group=True)
         result = []
