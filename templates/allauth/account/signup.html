@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block root %}
+    {% load  topic_helper %}
+    {#<h1>{% trans "Sign Up" %}</h1>#}
+
+    {#<p>Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>#}
+    <div class="layui-row">
+
+        <div class="layui-row layui-col-space10" style="padding: 15px;">
+            <div class="layui-col-md2"></div>
+            <div class="layui-col-md8">
+                {% if form.errors %}
+                    <div align="center">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form class="layui-form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                    {% csrf_token %}
+                    {#                    {{ form.as_p }}#}
+                    {{ form.username |  select }}
+                    {{ form.email |  select }}
+                    {{ form.password1 |  select }}
+                    {{ form.password2 |  select }}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <div align="center">
+                        <button type="submit" class="layui-btn">注册</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
