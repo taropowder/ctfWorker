@@ -48,6 +48,7 @@ def runContainerFromDockerFile(topic: Topic, team=None):
     container = client.containers.run(image=topic.build_name, ports={f'{topic.port}/tcp': instance.port},
                                       name=topic.build_name, command=topic.exec_command, detach=True)
     instance.container_id = container.short_id
+    instance.flag = topic.flag
     instance.save()
     result['message'] = f"{topic.title} 已成功开启，端口为{port}"
     return result

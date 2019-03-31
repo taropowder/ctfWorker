@@ -26,20 +26,19 @@ class MemberUpdateView(UpdateView):
         return reverse_lazy('account_detail', kwargs=self.kwargs)
 
 
-class solveProblemView(CreateView):
-    model = SolveProblem
+class solveProblemView(FormView):
     form_class = SolveProblemForm
 
     def form_valid(self, form):
         result = {}
-        self.object = form.save(commit=False)
-        topic = TopicInstance.objects.get(id=form.data['topic'])
+        topic = TopicInstance.objects.get(topic_id=form.data['topic'])
         if topic.flag == form.data['flag']:
-            self.object.member = self.request.user
+
+            # self.object.member = self.request.user
             result['message'] = "提交正确"
             result['status'] = True
             try:
-                self.object.save()
+                SolveProblem.objects.create(topic=topic, member=self.request.user)
             except IntegrityError:
                 result['message'] = "您已经提交过FLAG，请勿重复提交"
                 result['status'] = False

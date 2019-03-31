@@ -13,8 +13,10 @@ urlpatterns = [
     url('/build/', topic_views.buildImageView.as_view(), name='image_build'),
     url('/group_delete/(?P<pk>\d+)/', topic_views.TopicGroupDeleteView.as_view(), name='topic_group_delete'),
     url('/build_logs/(?P<pk>\d+)/', topic_views.ImagesBuildLogs.as_view(), name='build_logs'),
-    url('/(?P<type>[\u4e00-\u9fa5_a-zA-Z0-9]+)/', topic_views.TopicCardView.as_view(), name='show_topics_with_type'),
-    url('/instance_list/', topic_views.TopicInstanceListView.as_view(), name='instance_list'),
     url('/start_all/', topic_views.TopicGroupStartView.as_view(), name='start_all'),
+    url('/instance_list/', topic_views.TopicInstanceListView.as_view(), name='instance_list'),
+    url('/(?P<type>[\u4e00-\u9fa5_a-zA-Z0-9]+)/', topic_views.TopicCardView.as_view(), name='show_topics_with_type'),
+
+
 
 ]

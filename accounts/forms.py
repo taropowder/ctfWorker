@@ -42,14 +42,14 @@ class UserForm(forms.ModelForm):
         ]
 
 
-class SolveProblemForm(forms.ModelForm):
+class SolveProblemForm(forms.Form):
     flag = forms.CharField()
-
-    class Meta:
-        model = SolveProblem
-        fields = {
-            'topic',
-        }
+    topic = forms.NumberInput()
+    # class Meta:
+    #     model = SolveProblem
+    #     fields = {
+    #         'topic',
+    #     }
 
 
 class TeamForm(forms.ModelForm):
