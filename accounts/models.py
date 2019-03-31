@@ -105,7 +105,7 @@ class TopicInstance(models.Model):
 
 class SolveProblem(models.Model):
     member = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="做题人", on_delete='CASCADE')
-    topic = models.ForeignKey(TopicInstance, verbose_name="题目", on_delete='CASCADE')
+    topic = models.ForeignKey(TopicInstance, verbose_name="题目", on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
 
     @property
