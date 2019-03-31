@@ -118,6 +118,7 @@ def get_topic_instance(topic: Topic):
                                         <th>题目队伍</th> 
                                         <th>容器ID</th> 
                                         <th>容器状态</th>
+                                        <th>重启</th>
                                         </thead>
                                         <tbody>
         """
@@ -127,6 +128,7 @@ def get_topic_instance(topic: Topic):
         <td>{team}</td>
         <td>{id}</td>
         <td>{status}</td>
+        <td><button class="layui-btn ">重启</button></td>
         </tr>
         """
     html_body = ""

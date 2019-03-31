@@ -67,9 +67,6 @@ class Member(AbstractUser):
     school = models.CharField('学校', max_length=30)
     team = models.ForeignKey(Team, verbose_name="队伍", on_delete='SET_NULL', null=True, blank=True)
     is_leader = models.BooleanField('是否为队长', default=False)
-    # grade = models.CharField
-    # USERNAME_FIELD = 'username'
-    # REQUIRED_FIELDS = ['username']
     objects = MyUserManager()
 
     @property
@@ -77,8 +74,11 @@ class Member(AbstractUser):
         solved_problems = SolveProblem.objects.filter(member=self)
         integral = 0
         for solved_problem in solved_problems:
-            integral += solved_problem.integral
-        return integral if integral else 0
+            try:
+                integral += solved_problem.integral
+            except:
+                pass
+        return integral
         # return utils.get_score_by_member(self)
 
     class Meta:

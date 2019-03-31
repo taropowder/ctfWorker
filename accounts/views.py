@@ -6,7 +6,7 @@ from accounts.models import TopicInstance
 from accounts.models import Team
 from .forms import UserForm, SolveProblemForm, TeamForm, JoinTeamForm
 # Create your views here.
-from django.views.generic import DetailView, UpdateView, CreateView, FormView
+from django.views.generic import DetailView, UpdateView, CreateView, FormView, ListView
 from django.urls import reverse_lazy
 
 from accounts.models import Member, SolveProblem
@@ -87,3 +87,21 @@ class TeamJoinView(FormView):
         else:
             form.add_error(None, "UUID 和 队伍名称不匹配")
             return self.form_invalid(form)
+
+class MemberRankView(ListView):
+    template_name = 'accounts/members_ranking.html'
+    model = Member
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(MemberRankView, self).get_context_data(**kwargs)
+        context['member_list'] = sorted(context['member_list'], key=lambda t: t.score, reverse=True)
+        return context
+
+class TeamRankView(ListView):
+    template_name = 'accounts/team_ranking.html'
+    model = Team
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TeamRankView, self).get_context_data(**kwargs)
+        context['team_list'] = sorted(context['team_list'], key=lambda t: t.score, reverse=True)
+        return context

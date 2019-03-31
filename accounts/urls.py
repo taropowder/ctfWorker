@@ -8,4 +8,6 @@ urlpatterns = [
     url('detail/(?P<pk>\d+)/', accounts_views.MemberDetailView.as_view(), name='account_detail'),
     url('update/(?P<pk>\d+)/', accounts_views.MemberUpdateView.as_view(), name='account_update'),
     url('check_flag/', accounts_views.solveProblemView.as_view(), name='check_flag'),
+    url('member_rank/', accounts_views.MemberRankView.as_view(), name='member_rank'),
+    url('team_rank/', accounts_views.TeamRankView.as_view(), name='team_rank'),
 ]

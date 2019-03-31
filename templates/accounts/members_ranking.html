@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block root %}
+    <div class="layui-row">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2"></div>
+            <div class="layui-col-md8">
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for member in member_list%}
+                        <tr>
+
+                            <td>{{ member.username }}</td>
+                            <td>{{ member.score }}</td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+
+        </script>
+{% endblock %}
