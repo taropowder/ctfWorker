@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 from django.conf import settings
-from topic.models import Topic, TopicInstance, Team
+from accounts.models import Topic, TopicInstance
 from topic.forms import UploadForm
 from topic import utils
 from django.contrib.auth.mixins import LoginRequiredMixin

@@ -8,7 +8,7 @@ from django.conf import settings
 
 from accounts.models import Member, SolveProblem
 from accounts.utils import get_score_by_member
-from topic.models import Topic, TopicInstance
+from topic.models import Topic
 from topic.utils import getContainerStatus
 
 register = template.Library()
