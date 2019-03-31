@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from topic.models import Team, TopicInstance
 
-
 # Create your models here.
 
 
@@ -52,6 +51,15 @@ class Member(AbstractUser):
     # REQUIRED_FIELDS = ['username']
     objects = MyUserManager()
 
+    @property
+    def score(self):
+        solved_problems = SolveProblem.objects.filter(member=self)
+        integral = 0
+        for solved_problem in solved_problems:
+            integral += solved_problem.integral
+        return integral
+        # return utils.get_score_by_member(self)
+
     class Meta:
         verbose_name = '用户'
         verbose_name_plural = verbose_name
@@ -64,6 +72,7 @@ class Member(AbstractUser):
 class SolveProblem(models.Model):
     member = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="做题人", on_delete='CASCADE')
     topic = models.ForeignKey(TopicInstance, verbose_name="题目", on_delete='CASCADE')
+    create_time = models.DateTimeField(auto_now_add=True)
 
     @property
     def integral(self):

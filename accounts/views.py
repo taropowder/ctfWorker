@@ -71,7 +71,6 @@ class TeamDetailView(DetailView):
         context['members'] = Member.objects.filter(team=self.object)
         context['all_score'] = 0
         for member in context['members']:
-            member.score = get_score_by_member(member)
             context['all_score'] += member.score
         return context
 

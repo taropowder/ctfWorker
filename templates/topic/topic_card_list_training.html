@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block root %}
     {% load topic_helper %}
+    {% load accounts_helper %}
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             <legend>{{ type }}</legend>
@@ -11,7 +12,7 @@
             {% for topic in topic_list %}
                 <div class="layui-col-md4" align="center">
                     <a href="#">
-                        <div class="layui-card" style="background-color: #858585"
+                        <div class="layui-card"  {{ topic | is_solved:request.user }}
                              onclick="showTopic('{{ request.get_host | url_parser:topic }}','{{ topic.title }}',{{ topic.id }})">
                             <div class="layui-card-header">{{ topic.title }}</div>
                             <div class="layui-card-body">

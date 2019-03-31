@@ -23,8 +23,10 @@ def form_filed(field: BoundField):
 
 
 @register.filter(name="is_solved", help_content=None)
-def is_solved():
+def is_solved(topic: Topic, member: Member):
     result = ""
+    if SolveProblem.objects.filter(topic__topic=topic).filter(member=member).first():
+        result = 'style="background-color: #858585"'
     return mark_safe(result)
 
 
