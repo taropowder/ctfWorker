@@ -41,6 +41,12 @@ class UploadForm(forms.ModelForm):
         required=True
     )
 
+    def clean_flag(self):
+        if len(self.cleaned_data['flag'])<10:
+            raise forms.ValidationError('FLAG长度不可小于10')
+        else:
+            return self.cleaned_data['flag']
+
     def clean_zip_file(self):
         exts = ['zip', '7z']
         for ext in exts:
@@ -52,10 +58,12 @@ class UploadForm(forms.ModelForm):
         model = Topic
         widgets = {
             'integral': widgets.NumberInput(attrs={'class': 'layui-input'}),
+            'flag': widgets.TextInput(attrs={'class': 'layui-input'}),
         }
         fields = [
             'port',
             'type',
+            'flag',
             'zip_file',
             'build_type',
             'title',
