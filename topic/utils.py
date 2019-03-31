@@ -28,7 +28,11 @@ def un_zip(file_name, project_name):
 
 
 def getContainerStatus(container_id):
-    return DockerClient(base_url='tcp://127.0.0.1:2375').containers.get(container_id).status
+    try:
+        result = DockerClient(base_url='tcp://127.0.0.1:2375').containers.get(container_id).status
+    except NotFound as e:
+        result = "容器运行失败"
+    return result
 
 
 def runContainerFromDockerFile(topic: Topic, team=None):
@@ -66,8 +70,6 @@ def is_used(port):
     try:
         s.connect((ip, int(port)))
         s.shutdown(2)
-        # 利用shutdown()函数使socket双向数据传输变为单向数据传输。shutdown()需要一个单独的参数，
-        # 该参数表示了如何关闭socket。具体为：0表示禁止将来读；1表示禁止将来写；2表示禁止将来读和写。
         return True
     except:
         return False

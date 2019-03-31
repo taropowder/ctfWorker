@@ -8,10 +8,12 @@
     <script src="/static/layui/layui.js"></script>
 
 </head>
-<body class="layui-layout-body" style="background-color: #F2F2F2">
-<div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo">CTFER(训练模式)</div>
+<body class="layui-layout-body layui-bg-gray">
+<div class="layui-layout layui-layout-admin ">
+    <div class="layui-header {% if request.user.is_superuser %}
+                layui-bg-blue
+                {% endif %}">
+        <div class="layui-logo layui-bg-black">CTFER(训练模式)</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="">公告</a></li>
@@ -37,15 +39,18 @@
                     <dd><a href="">授权管理</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">赛题管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="{% url 'topic_upload' %}">赛题上传</a></dd>
-                    <dd><a href="{% url 'topic_list' %}">查看题目</a></dd>
-                    <dd><a href="{% url 'topic_group_list' %}">查看组卷</a></dd>
-                    <dd><a href="{% url 'instance_list' %}">题目状态</a></dd>
-                </dl>
-            </li>
+            {% if request.user.is_superuser %}
+                <li class="layui-nav-item">
+                    <a href="javascript:;">赛题管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{% url 'topic_upload' %}">赛题上传</a></dd>
+                        <dd><a href="{% url 'topic_list' %}">查看题目</a></dd>
+                        <dd><a href="{% url 'topic_group_list' %}">查看组卷</a></dd>
+                        <dd><a href="{% url 'instance_list' %}">题目状态</a></dd>
+                    </dl>
+                </li>
+            {% endif %}
+
         </ul>
         {% if request.user.is_authenticated %}
             <ul class="layui-nav layui-layout-right">

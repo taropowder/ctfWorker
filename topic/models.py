@@ -6,21 +6,6 @@ from uuid import uuid1, uuid4
 # Create your models here.
 
 
-# class Team(models.Model):
-#     name = models.CharField('队伍名称', max_length=50, unique=True)
-#     uuid = models.CharField('队伍ID', max_length=8, unique=True, default=uuid4())
-#     create_time = models.DateTimeField(auto_now_add=True)
-#
-#     @property
-#     def score(self):
-#         integral = 0
-#         members = Team.objects.filter(team=self)
-#         for member in members:
-#             integral += member.score
-#         return integral
-#
-#     def __str__(self):
-#         return self.name
 
 
 class Topic(models.Model):
@@ -59,17 +44,3 @@ class Topic(models.Model):
     integral = models.IntegerField('积分', default=0)
 
 
-# class TopicInstance(models.Model):
-#     # 用team_id 为空的表示为训练题目
-#     team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
-#     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-#     port = models.IntegerField('题目端口')
-#     flag = models.CharField('题目答案', max_length=50)
-#     container_id = models.CharField('容器ID', max_length=16, null=True)
-#
-#     @property
-#     def integral(self):
-#         return self.topic.integral
-
-# class TopicGroup(models.Model):
-#     topic = models.OneToOneField(Topic)

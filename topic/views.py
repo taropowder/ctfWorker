@@ -15,6 +15,17 @@ from topic import tasks
 
 # Create your views here.
 
+
+class AdminRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super(AdminRequiredMixin, self).dispatch(request, *args, **kwargs)
+        else:
+            self.raise_exception = True
+            self.permission_denied_message = "只有管理员才可以访问"
+            return self.handle_no_permission()
+
+
 def home(request):
     form = UploadForm()
     return render(request, 'index.html', {'form': form})
@@ -35,13 +46,7 @@ class TopicCardView(LoginRequiredMixin, ListView):
         return qs.filter(type=self.kwargs['type']).filter(in_group=True)
 
 
-# def topic(request, type):
-#     content = {}
-#     content['type'] = type
-#     return render(request, 'topic.html', content)
-
-
-class TopicCreate(LoginRequiredMixin, CreateView):
+class TopicCreate(AdminRequiredMixin, CreateView):
     model = Topic
     form_class = UploadForm  # 表类
     template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
@@ -56,12 +61,12 @@ class TopicCreate(LoginRequiredMixin, CreateView):
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 
 
-class TopicListView(LoginRequiredMixin, ListView):
+class TopicListView(AdminRequiredMixin, ListView):
     template_name = 'topic/topic_list.html'
     model = Topic
 
 
-class TopicGroupListView(LoginRequiredMixin, ListView):
+class TopicGroupListView(AdminRequiredMixin, ListView):
     template_name = 'topic/topic_group_list.html'
     model = Topic
 
@@ -70,12 +75,12 @@ class TopicGroupListView(LoginRequiredMixin, ListView):
         return qs.filter(in_group=True)
 
 
-class TopicDetailView(LoginRequiredMixin, DetailView):
+class TopicDetailView(AdminRequiredMixin, DetailView):
     template_name = 'topic/topic_detail.html'
     model = Topic
 
 
-class TopicUpdateView(LoginRequiredMixin, UpdateView):
+class TopicUpdateView(AdminRequiredMixin, UpdateView):
     model = Topic
     form_class = UploadForm
     template_name = 'topic/topic_form.html'  # 添加表对象的模板页面
@@ -90,14 +95,14 @@ class TopicUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class TopicDeleteView(LoginRequiredMixin, DeleteView):
+class TopicDeleteView(AdminRequiredMixin, DeleteView):
     model = Topic
     success_url = reverse_lazy('topic_list')
 
     get = DeleteView.http_method_not_allowed
 
 
-class TopicGroupJoinView(LoginRequiredMixin, UpdateView):
+class TopicGroupJoinView(AdminRequiredMixin, UpdateView):
     get = View.http_method_not_allowed
     model = Topic
     success_url = reverse_lazy('topic_group_list')  # 成功添加表对象后 跳转到的页面
@@ -107,7 +112,7 @@ class TopicGroupJoinView(LoginRequiredMixin, UpdateView):
         return HttpResponse("form is invalid.. this is just an HttpResponse object")
 
 
-class TopicGroupDeleteView(LoginRequiredMixin, UpdateView):
+class TopicGroupDeleteView(AdminRequiredMixin, UpdateView):
     model = Topic
     success_url = reverse_lazy('topic_group_list')
     fields = ('in_group',)
@@ -119,7 +124,7 @@ class TopicGroupDeleteView(LoginRequiredMixin, UpdateView):
         return super(TopicGroupDeleteView, self).post(request, *args, **kwargs)
 
 
-class buildImageView(LoginRequiredMixin, View):
+class buildImageView(AdminRequiredMixin, View):
     get = View.http_method_not_allowed
 
     def post(self, request):
@@ -146,7 +151,7 @@ class buildImageView(LoginRequiredMixin, View):
             return HttpResponse("ID错误")
 
 
-class ImagesBuildLogs(LoginRequiredMixin, SingleObjectMixin, View):
+class ImagesBuildLogs(AdminRequiredMixin, SingleObjectMixin, View):
     model = Topic
 
     def get(self, request, *args, **kwargs):
@@ -154,7 +159,7 @@ class ImagesBuildLogs(LoginRequiredMixin, SingleObjectMixin, View):
         return HttpResponse(self.object.build_log)
 
 
-class TopicInstanceListView(LoginRequiredMixin, ListView):
+class TopicInstanceListView(AdminRequiredMixin, ListView):
     template_name = 'topic/topicinstance_list.html'
     model = Topic
 
@@ -163,7 +168,7 @@ class TopicInstanceListView(LoginRequiredMixin, ListView):
         return qs.filter(in_group=True)
 
 
-class TopicGroupStartView(LoginRequiredMixin, View):
+class TopicGroupStartView(AdminRequiredMixin, View):
     def post(self, request):
         topic_group = Topic.objects.filter(in_group=True)
         result = []
