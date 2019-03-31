@@ -165,3 +165,8 @@ EMAIL_USE_TLS = config['mail']['email_use_tls']  # 这里必须是 True，否则
 EMAIL_FROM = config['mail']['email_from']  # 你的 QQ 账号
 DEFAULT_FROM_EMAIL = config['mail']['default_form_email']
 ACCOUNT_EMAIL_VERIFICATION = config['mail']['account_email_verification']
+
+
+# allauth设置
+
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True

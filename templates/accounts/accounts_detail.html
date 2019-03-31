@@ -10,7 +10,9 @@
                 </fieldset>
                 <div id="layerDemo">
                     <a href="{% url 'account_update' member.id %}" class="layui-btn layui-btn-normal"
-                       style="float: right;margin-bottom: 20px">修改</a>
+                       style="float: right;margin-bottom: 20px;margin-left: 10px">修改资料</a>
+                    <a href="{% url 'account_change_password' %}" class="layui-btn layui-btn-danger"
+                       style="float: right;margin-bottom: 20px;margin-left: 10px">修改密码</a>
                 </div>
 
                 <table class="layui-table" lay-skin="line">
