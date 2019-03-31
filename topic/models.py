@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from uuid import uuid1
+from uuid import uuid1, uuid4
 
 
 # Create your models here.
@@ -8,7 +8,7 @@ from uuid import uuid1
 
 class Team(models.Model):
     name = models.CharField('队伍名称', max_length=50, unique=True)
-    uuid = models.CharField('队伍ID', max_length=8, unique=True, default=uuid1())
+    uuid = models.CharField('队伍ID', max_length=8, unique=True, default=uuid4())
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Topic(models.Model):
     introduction = models.TextField('题目简介')
     flag_is_unique = models.BooleanField('答案是否唯一')
     exec_command = models.TextField('需要执行的命令', null=True)
-    zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid1()}', null=False)
+    zip_file = models.FileField(verbose_name='部署的压缩包', upload_to=f'docker/{uuid4()}', null=False)
     image_id = models.CharField('镜像ID', null=True, max_length=16)
     in_group = models.BooleanField("是否加入试卷", default=False)
     flag = models.CharField('FLAG', max_length=50, null=True)
@@ -58,6 +58,10 @@ class TopicInstance(models.Model):
     port = models.IntegerField('题目端口')
     flag = models.CharField('题目答案', max_length=50)
     container_id = models.CharField('容器ID', max_length=16, null=True)
+
+    @property
+    def integral(self):
+        return self.topic.integral
 
 # class TopicGroup(models.Model):
 #     topic = models.OneToOneField(Topic)

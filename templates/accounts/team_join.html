@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% load topic_helper %}
+{% block root %}
+
+    <div class="layui-row layui-col-space10" style="padding: 15px;">
+        <div class="layui-col-md2"></div>
+        <div class="layui-col-md8">
+            {% if form.errors %}
+                    <div align="center" style="color: red">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            <form class="layui-form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.uuid | select }}
+                {{ form.name | select }}
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit id="form_submit">加入队伍</button>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                //Demo
+                layui.use('form', function () {
+                    var form = layui.form;
+                });
+
+
+            </script>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

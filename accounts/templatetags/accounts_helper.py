@@ -1,9 +1,13 @@
 from django import template
+from django.db.models import Sum
 from django.forms import BoundField
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.db import models
 from django.conf import settings
+
+from accounts.models import Member, SolveProblem
+from accounts.utils import get_score_by_member
 from topic.models import Topic, TopicInstance
 from topic.utils import getContainerStatus
 
@@ -22,3 +26,9 @@ def form_filed(field: BoundField):
 def is_solved():
     result = ""
     return mark_safe(result)
+
+
+@register.filter(name="get_score")
+def get_score(member: Member):
+    integral = get_score_by_member(member)
+    return mark_safe(integral)

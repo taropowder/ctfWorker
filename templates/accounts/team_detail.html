@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% load topic_helper %}
+{% load accounts_helper %}
 {% block root %}
     <div class="layui-row">
         <div class="layui-row layui-col-space10">
@@ -17,7 +18,11 @@
                     </colgroup>
 {#                    {{ member.username }}#}
                     {{ team | detail_filed:'name' }}
-
+                    {{ team | detail_filed:'uuid' }}
+                     <tr>
+                    <td>队伍总分</td>
+                    <td>{{ all_score }}</td>
+                </tr>
                 </table>
 
                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
@@ -32,6 +37,16 @@
                         <th>成员</th>
                         <th>得分</th>
                         </thead>
+                        <tbody>
+                        {% for member in members %}
+                        <tr>
+                        <td>{{ member }}{% if member.is_leader %}
+                        <font color="red">队长</font>
+                        {% endif %}</td>
+                        <td>{{ member.score }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
 {#                    {{ member.username }}#}
 
                 </table>

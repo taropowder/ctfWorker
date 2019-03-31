@@ -50,12 +50,16 @@ class UploadForm(forms.ModelForm):
 
     class Meta:
         model = Topic
+        widgets = {
+            'integral': widgets.NumberInput(attrs={'class': 'layui-input'}),
+        }
         fields = [
             'port',
             'type',
             'zip_file',
             'build_type',
             'title',
+            'integral',
             'introduction',
             'build_name',
             'exec_command',

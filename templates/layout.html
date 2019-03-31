@@ -45,17 +45,28 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                       {{ request.user.username }}
+                        {{ request.user.username }}
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="{% url 'account_detail' request.user.id  %}">个人资料</a></dd>
-                        <dd><a href="">组队情况</a></dd>
+                        <dd><a href="{% url 'account_detail' request.user.id %}">个人资料</a></dd>
+                        {% if request.user.team %}
+
+                            <dd><a href="{% url 'team_detail' request.user.team.id %}">我的队伍</a></dd>
+
+                        {% else %}
+                            <dd><a href="{% url 'team_create' %}">创建队伍</a></dd>
+                            <dd><a href="{% url 'team_create' %}">加入队伍</a></dd>
+                        {% endif %}
                     </dl>
                 </li>
-                <li class="layui-nav-item"><form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<input type="submit" style="display: none" id="logout"></form><a href="#" onclick="document.getElementById('logout').click();return false">注销</a></li>
+                <li class="layui-nav-item">
+                    <form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<input type="submit"
+                                                                                                   style="display: none"
+                                                                                                   id="logout"></form>
+                    <a href="#" onclick="document.getElementById('logout').click();return false">注销</a></li>
             </ul>
         {% else %}
-             <ul class="layui-nav layui-layout-right">
+            <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item"><a href="{% url 'account_signup' %}">注册</a></li>
                 <li class="layui-nav-item"><a href="{% url 'account_login' %}">登录</a></li>
             </ul>

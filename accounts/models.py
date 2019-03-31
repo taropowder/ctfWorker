@@ -65,5 +65,9 @@ class SolveProblem(models.Model):
     member = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="做题人", on_delete='CASCADE')
     topic = models.ForeignKey(TopicInstance, verbose_name="题目", on_delete='CASCADE')
 
+    @property
+    def integral(self):
+        return self.topic.integral
+
     class Meta:
         unique_together = ["member", "topic"]

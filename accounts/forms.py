@@ -5,6 +5,7 @@ from django.forms import widgets, Field
 from topic.models import Team
 from .models import Member, SolveProblem
 
+
 # Field.default_error_messages = {
 #
 # }
@@ -61,3 +62,19 @@ class TeamForm(forms.ModelForm):
         fields = {
             'name'
         }
+
+
+class JoinTeamForm(forms.Form):
+    uuid = forms.UUIDField(
+        label='队伍UUID',
+        widget=widgets.TextInput(attrs={'class': 'layui-input'}),
+    )
+
+    name = forms.CharField(
+        label='队伍名称',
+        widget=widgets.TextInput(attrs={'class': 'layui-input'}),
+    )
+
+    # def clean_uuid(self):
+    #     team = Team.objects.filter(uuid=self.cleaned_data['uuid']).filter(name=self.cleaned_data['name']).first()
+    #     raise forms.ValidationError('上传的文件类型不被允许')
