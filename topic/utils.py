@@ -10,7 +10,8 @@ from docker import DockerClient
 # from .models import Topic
 from docker.errors import NotFound
 
-from topic.models import Topic, TopicInstance
+from topic.models import Topic
+from accounts.models import TopicInstance
 
 
 def un_zip(file_name, project_name):

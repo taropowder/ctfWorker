@@ -1,5 +1,5 @@
 from accounts.models import Member, SolveProblem
-from topic.models import Team
+from accounts.models import Team
 
 
 def get_score_by_member(member: Member):

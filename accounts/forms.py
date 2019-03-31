@@ -2,7 +2,7 @@ from allauth.account.forms import LoginForm, PasswordField, SignupForm
 from django import forms
 from django.forms import widgets, Field
 
-from topic.models import Team
+from accounts.models import Team
 from .models import Member, SolveProblem
 
 
@@ -38,7 +38,6 @@ class UserForm(forms.ModelForm):
         }
         fields = [
             'username',
-            'team',
             'school',
         ]
 

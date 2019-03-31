@@ -3,7 +3,8 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.db import models
 from django.conf import settings
-from topic.models import Topic, TopicInstance
+from topic.models import Topic
+from accounts.models import TopicInstance
 from topic.utils import getContainerStatus
 
 register = template.Library()

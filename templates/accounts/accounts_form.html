@@ -10,7 +10,8 @@
             {% endif %}
             <form class="layui-form" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-{#                {{ form.name | select }}#}
+                {{ form.username | select }}
+                {{ form.school | select }}
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
