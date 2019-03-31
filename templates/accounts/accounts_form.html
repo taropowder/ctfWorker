@@ -10,43 +10,21 @@
             {% endif %}
             <form class="layui-form" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.username | select }}
-                {{ form.school | select }}
+{#                {{ form.name | select }}#}
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit id="form_submit">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <button class="layui-btn" lay-submit id="form_submit">修改</button>
                     </div>
                 </div>
             </form>
 
             <script>
                 //Demo
-              function upload() {
-                    var element = document.getElementById('upload');
-                    console.log('123123');
-                    element.click();
-                }
                 layui.use('form', function () {
                     var form = layui.form;
                 });
 
-{#                layui.use('upload', function () {#}
-{#                    var $ = layui.jquery#}
-{#                        , upload = layui.upload;#}
-{#                    upload.render({ //允许上传的文件后缀#}
-{#                        elem: '#test4'#}
-{#                        , url: '/upload/'#}
-{#                        , auto: false#}
-{#                        , accept: 'file' //普通文件#}
-{#                        , bindAction: '#form_submit'#}
-{#                        , exts: 'zip|rar|7z' //只允许上传压缩文件#}
-{#                        , done: function (res) {#}
-{#                            console.log(res)#}
-{#                        }#}
-{#                    });#}
-{#                })#}
 
             </script>
 

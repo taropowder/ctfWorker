@@ -17,3 +17,8 @@ def form_filed(field: BoundField):
     # field.build_widget_attrs({'class': "layui-input", })
     return mark_safe(field)
 
+
+@register.filter(name="is_solved", help_content=None)
+def is_solved():
+    result = ""
+    return mark_safe(result)

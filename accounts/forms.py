@@ -1,8 +1,13 @@
 from allauth.account.forms import LoginForm, PasswordField, SignupForm
 from django import forms
-from django.forms import widgets
+from django.forms import widgets, Field
+
+from topic.models import Team
 from .models import Member, SolveProblem
 
+# Field.default_error_messages = {
+#
+# }
 
 class MySignupForm(SignupForm):
     def __init__(self, *args, **kwargs):
@@ -39,11 +44,20 @@ class UserForm(forms.ModelForm):
 
 class SolveProblemForm(forms.ModelForm):
     flag = forms.CharField()
-    # member = forms.CharField(required=False)
-
 
     class Meta:
         model = SolveProblem
         fields = {
             'topic',
+        }
+
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        widgets = {
+            'name': widgets.TextInput(attrs={'class': 'layui-input'}),
+        }
+        fields = {
+            'name'
         }

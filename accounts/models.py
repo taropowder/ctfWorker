@@ -46,6 +46,7 @@ class Member(AbstractUser):
     email = models.EmailField('邮箱', max_length=255, unique=True)
     school = models.CharField('学校', max_length=30)
     team = models.ForeignKey(Team, verbose_name="队伍", on_delete='SET_NULL', null=True, blank=True)
+    is_leader = models.BooleanField('是否为队长', default=False)
     # grade = models.CharField
     # USERNAME_FIELD = 'username'
     # REQUIRED_FIELDS = ['username']

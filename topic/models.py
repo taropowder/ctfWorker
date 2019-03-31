@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from uuid import uuid1
 
@@ -7,8 +8,11 @@ from uuid import uuid1
 
 class Team(models.Model):
     name = models.CharField('队伍名称', max_length=50, unique=True)
-    uuid = models.CharField('队伍ID', max_length=8, unique=True)
+    uuid = models.CharField('队伍ID', max_length=8, unique=True, default=uuid1())
     create_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Topic(models.Model):

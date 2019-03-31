@@ -9,13 +9,16 @@
 
         <div class="layui-row layui-col-space10" style="padding: 15px;">
             {% for topic in topic_list %}
-                <div class="layui-col-md4">
+                <div class="layui-col-md4" align="center">
                     <a href="#">
-                        <div class="layui-card"
+                        <div class="layui-card" style="background-color: #858585"
                              onclick="showTopic('{{ request.get_host | url_parser:topic }}','{{ topic.title }}',{{ topic.id }})">
                             <div class="layui-card-header">{{ topic.title }}</div>
                             <div class="layui-card-body">
                                 {{ topic.introduction }}
+                            </div>
+                            <div class="layui-card-footer">
+                                <font color="red">{{ topic.integral }}</font>分
                             </div>
                         </div>
                     </a>
@@ -92,9 +95,6 @@
         layui.use(['form'], function () {
             var form = layui.form;
             form.on('submit(flag)', function (data) {
-                {#                layer.alert(JSON.stringify(data.field), {#}
-                {#                    title: '最终的提交信息'#}
-                {#                });#}
                 var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
                 request.onreadystatechange = function () { // 状态发生变化时，函数被回调
                     if (request.readyState === 4) { // 成功完成
@@ -114,11 +114,6 @@
                                 layer.alert(res['message'], {
                                     title: '错误'
                                 });
-                                {#                                layer.alert(res['message'], {#}
-                                {#                                    title: '错误'#}
-                                {#                                });#}
-
-                                {#                                layer.msg(res['message']);#}
                             }
 
 

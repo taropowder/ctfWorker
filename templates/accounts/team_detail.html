@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% load topic_helper %}
+{% block root %}
+    <div class="layui-row">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2"></div>
+            <div class="layui-col-md8">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                    <legend>{{ team }}</legend>
+                </fieldset>
+
+
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                    </colgroup>
+{#                    {{ member.username }}#}
+                    {{ team | detail_filed:'name' }}
+
+                </table>
+
+                   <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                    <legend>队伍成员</legend>
+                </fieldset>
+                    <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                    </colgroup>
+                        <thead>
+                        <th>成员</th>
+                        <th>得分</th>
+                        </thead>
+{#                    {{ member.username }}#}
+
+                </table>
+
+            </div>
+        </div>
+        <script>
+
+
+        </script>
+{% endblock %}

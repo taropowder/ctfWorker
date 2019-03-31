@@ -1,8 +1,8 @@
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
-from topic.models import Topic, TopicInstance
-from .forms import UserForm, SolveProblemForm
+from topic.models import Topic, TopicInstance, Team
+from .forms import UserForm, SolveProblemForm, TeamForm
 # Create your views here.
 from django.views.generic import DetailView, UpdateView, CreateView
 from django.urls import reverse_lazy
@@ -46,3 +46,20 @@ class solveProblemView(CreateView):
             result['message'] = "FLAG错误"
             result['status'] = False
         return JsonResponse(result)
+
+
+class TeamCreateView(CreateView):
+    template_name = "accounts/team_form.html"
+    form_class = TeamForm
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.request.user.team = self.object
+        self.request.user.is_master = True
+        self.request.user.save()
+        return HttpResponseRedirect(reverse_lazy('team_detail', kwargs={'pk': self.object.id}))
+
+
+class TeamDetailView(DetailView):
+    template_name = "accounts/team_detail.html"
+    model = Team
