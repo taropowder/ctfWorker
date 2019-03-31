@@ -1,0 +1,22 @@
+
+{% extends 'layout.html' %}
+{% block root %}
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>公告<legend>
+        </fieldset>
+        {% for announcement in announcement_list %}
+         <div class="layui-card layui-anim layui-anim-up"  >
+                            <div class="layui-card-header">{{ announcement.title }}</div>
+                            <div class="layui-card-body">
+                                {{ announcement.content }}
+                            </div>
+                            <div class="layui-card-footer" style="float: right;margin-bottom: 20px">
+                                {{ announcement.create_time | date:"Y-m-d H:i:s" }}
+                            </div>
+                        </div>
+        {% endfor %}
+
+
+    </div>
+{% endblock %}

@@ -12,7 +12,7 @@
             {% for topic in topic_list %}
                 <div class="layui-col-md4" align="center">
                     <a href="#">
-                        <div class="layui-card"  {{ topic | is_solved:request.user }}
+                        <div class="layui-card layui-anim layui-anim-fadein"  {{ topic | is_solved:request.user }}
                              onclick="showTopic('{{ request.get_host | url_parser:topic }}','{{ topic.title }}',{{ topic.id }})">
                             <div class="layui-card-header">{{ topic.title }}</div>
                             <div class="layui-card-body">

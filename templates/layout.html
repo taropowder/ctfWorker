@@ -16,7 +16,7 @@
         <div class="layui-logo layui-bg-black">CTFER(训练模式)</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">公告</a></li>
+            <li class="layui-nav-item"><a href="{% url 'announcement' %}">公告</a></li>
             <li class="layui-nav-item">
                 <a href="javascript:;">排行榜</a>
                 <dl class="layui-nav-child">
@@ -34,9 +34,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">知识点</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">邮件管理</a></dd>
-                    <dd><a href="">消息管理</a></dd>
-                    <dd><a href="">授权管理</a></dd>
+{#                    <dd><a href="">邮件管理</a></dd>#}
                 </dl>
             </li>
             {% if request.user.is_superuser %}
