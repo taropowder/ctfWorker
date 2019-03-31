@@ -43,7 +43,7 @@ class TopicCardView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = super(TopicCardView, self).get_queryset()
-        return qs.filter(type=self.kwargs['type']).filter(in_group=True)
+        return qs.filter(type__name=self.kwargs['type']).filter(in_group=True)
 
 
 class TopicCreate(AdminRequiredMixin, CreateView):

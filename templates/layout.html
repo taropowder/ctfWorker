@@ -1,3 +1,4 @@
+{% load topic_helper %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,8 +28,9 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">赛题</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/topic/web">WEB</a></dd>
-                    <dd><a href="/topic/bin">二进制</a></dd>
+                    {% type_li %}
+{#                    <dd><a href="/topic/web">WEB</a></dd>#}
+{#                    <dd><a href="/topic/bin">二进制</a></dd>#}
                 </dl>
             </li>
             <li class="layui-nav-item">

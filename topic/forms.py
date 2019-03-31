@@ -10,10 +10,10 @@ class UploadForm(forms.ModelForm):
         widget=widgets.NumberInput(attrs={'class': "layui-input", 'placeholder': '0-65535'})
     )
 
-    type = forms.CharField(
-        label='赛题类型',
-        widget=forms.Select(choices=Topic.TYPE_CHOOSE, attrs={'lay-verify': 'required'})
-    )
+    # type = forms.CharField(
+    #     label='赛题类型',
+    #     widget=forms.Select(choices=Topic.TYPE_CHOOSE, attrs={'lay-verify': 'required'})
+    # )
 
     build_type = forms.CharField(
         widget=forms.Select(choices=Topic.BUILD_TYPE_CHOOSE, attrs={'lay-verify': 'required'})

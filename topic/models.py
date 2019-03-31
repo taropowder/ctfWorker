@@ -6,7 +6,14 @@ from uuid import uuid1, uuid4
 # Create your models here.
 
 
+class TopicType(models.Model):
+    name = models.CharField("类型", max_length=60)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "类型"
 
 class Topic(models.Model):
     TYPE_CHOOSE = (
@@ -33,7 +40,8 @@ class Topic(models.Model):
     title = models.CharField('题目名称', max_length=60)
     build_name = models.CharField('英文名称', max_length=80)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
-    type = models.CharField('题目类型', choices=TYPE_CHOOSE, max_length=20)
+    type = models.ForeignKey(TopicType,verbose_name='题目类型',on_delete='PROTECT')
+    # type = models.CharField('题目类型', choices=TYPE_CHOOSE, max_length=20)
     introduction = models.TextField('题目简介')
     flag_is_unique = models.BooleanField('答案是否唯一')
     exec_command = models.TextField('需要执行的命令', null=True)

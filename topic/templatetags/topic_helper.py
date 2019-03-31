@@ -1,9 +1,10 @@
 from django import template
+from django.urls import reverse_lazy
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.db import models
 from django.conf import settings
-from topic.models import Topic
+from topic.models import Topic, TopicType
 from accounts.models import TopicInstance
 from topic.utils import getContainerStatus
 
@@ -162,3 +163,13 @@ def card_show():
                     </a>
 
                 </div>"""
+
+
+@register.simple_tag
+def type_li():
+    types = TopicType.objects.all()
+    lis = ""
+    for topic_type in types:
+
+        lis += f"""<dd><a href="{reverse_lazy('show_topics_with_type', kwargs={'type': topic_type })}">{topic_type}</a></dd>"""
+    return mark_safe(lis)
